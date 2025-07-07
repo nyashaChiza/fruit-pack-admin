@@ -12,6 +12,7 @@ interface Product {
   price: string;
   unit: string;
   category_name: string;
+  stock: number;
 }
 
 export default function ProductsList() {
@@ -56,6 +57,7 @@ export default function ProductsList() {
             <th>Price</th>
             <th>Unit</th>
             <th>Category</th>
+            <th>Stock</th>
             <th className="text-right pr-4">Actions</th>
           </tr>
         </thead>
@@ -66,6 +68,7 @@ export default function ProductsList() {
               <td>{product.price}</td>
               <td>{product.unit}</td>
               <td>{product.category_name}</td>
+              <td>{product.stock}</td>
               <td className="text-right pr-4">
                 <Link href={`/admin/products/${product.id}`}>
                   <button className="text-blue-600 mr-3">View</button>
