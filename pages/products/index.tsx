@@ -1,8 +1,9 @@
 // app/admin/products/index.tsx
 import React from "react";
-import axios from "@/lib/axios"; // Adjust if needed
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { getToken } from "@/lib/auth"; // Adjust if needed 
+import { api } from "@/lib/api"; // Adjust if needed
 
 interface Product {
   id: number;
@@ -12,11 +13,24 @@ interface Product {
   category: string;
 }
 const [products, setProducts] = useState<Product[]>([]);
+const [token, setToken] = useState<string | null>(null);
+
+useEffect(() => {
+  const token = getToken();
+  if (token) {
+    setToken(token);
+  }
+}, setToken);
 
 useEffect(() => {
   const fetchProducts = async () => {
     try {
-      const res = await axios.get("/products/");
+        if (!token) {
+            console.error("No token found");
+            return;
+        }
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const res = await api.get("/products/");
       setProducts(res.data);
     } catch (err) {
       console.error("Failed to fetch products", err);
