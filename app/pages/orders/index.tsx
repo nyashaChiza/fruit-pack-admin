@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import api from "@/lib/api";
-import { getToken } from "@/lib/auth";
+import { Button } from "@/app/components/ui/button";
+import { Card, CardContent } from "@/app/components/ui/card";
+import api from "@/app/lib/api";
+import { getToken } from "@/app/lib/auth";
 
 interface Order {
   id: number;

@@ -3,8 +3,8 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import getToken from "@/lib/auth"; // Ensure it's a default export or adjust
-import api from "@/lib/api";
+import getToken from "@/app/lib/auth"; // Ensure it's a default export or adjust
+import api from "@/app/lib/api";
 
 interface Product {
   id: number;
