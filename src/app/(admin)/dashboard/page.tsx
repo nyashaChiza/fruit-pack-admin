@@ -54,9 +54,9 @@ export default function Ecommerce() {
           driversCount={drivers.length}
         />
       </div>
-      <div className="col-span-12 xl:col-span-12">
+      {/* <div className="col-span-12 xl:col-span-12">
         <MonthlySalesChart orders={orders} />
-      </div>
+      </div> */}
       <div className="col-span-12 xl:col-span-12">
         <RecentOrders orders={orders.slice(0, 5)} />
       </div>

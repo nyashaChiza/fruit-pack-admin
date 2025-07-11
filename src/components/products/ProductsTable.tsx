@@ -3,6 +3,7 @@
 type Product = {
   id: number | string;
   name: string;
+  unit: string;
   price: number;
   stock: number;
 };
@@ -43,7 +44,7 @@ export default function ProductsTable({ products, onEdit, onDelete }: Props) {
                 R{product.price.toFixed(2)}
               </td>
               <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
-                {product.stock} Units
+                {product.stock} {product.unit}
               </td>
               <td className="px-6 py-4 text-sm text-right">
                 <div className="flex justify-end gap-2">

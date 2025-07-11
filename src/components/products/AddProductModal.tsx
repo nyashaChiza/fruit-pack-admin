@@ -6,6 +6,7 @@ import Input from "@/components/form/input/InputField";
 import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal/index";
 import FileInput from "../form/input/FileInput";
+import { headers } from "next/headers";
 
 
 type Props = {
@@ -59,26 +60,31 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   const formData = new FormData();
 
-  // Required fields
-  formData.append("name", form.name);
-  formData.append("description", form.description || ""); // Optional but must be a string
-  formData.append("supplier_id", String(Number(form.supplier_id)));
-  formData.append("price", String(Number(form.price)));
-  formData.append("stock", String(Number(form.stock)));
+  formData.append("name", form.name || "");
+  formData.append("description", form.description || "");
+  formData.append("supplier_id", String(form.supplier_id));
+  formData.append("price", String(form.price));
+  formData.append("stock", String(form.stock));
   formData.append("unit", form.unit);
 
-  // Optional integer field – only append if present and valid
   if (form.category_id?.trim()) {
-    formData.append("category_id", String(Number(form.category_id)));
+    formData.append("category_id", String(form.category_id));
   }
 
-  // Image file – optional
   if (image) {
     formData.append("image", image);
   }
 
+  // Debug: log actual FormData
+  console.log("🧪 Submitting FormData:");
+  for (const [key, val] of formData.entries()) {
+    console.log(`${key}:`, val);
+  }
+
   try {
-    await api.post("/products", formData); // Axios auto-sets multipart headers
+    const response = await api.post("/products", formData); 
+    console.log("✅ Product created:", response.data);
+
     onSuccess();
     onClose();
     setForm({
@@ -92,17 +98,23 @@ const handleSubmit = async (e: React.FormEvent) => {
     });
     setImage(null);
   } catch (err: any) {
-    console.error("Failed to add product", err);
+    console.error("❌ Failed to add product:", err);
 
-    // Friendly FastAPI validation error handling
-    const details = err.response?.data?.detail;
-    if (details && Array.isArray(details)) {
-      const formatted = details
-        .map((d: any) => `${d.loc?.join(".")}: ${d.msg}`)
-        .join("\n");
-      alert("Validation failed:\n" + formatted);
+    if (err.response) {
+      const { status, data } = err.response;
+      console.error("🔴 Error response:", data);
+
+      const details = data?.detail;
+      if (Array.isArray(details)) {
+        const formatted = details
+          .map((d: any) => `${d.loc?.join(".")}: ${d.msg}`)
+          .join("\n");
+        alert("Validation failed:\n" + formatted);
+      } else {
+        alert("Unexpected error: " + (err.message || "Unknown error"));
+      }
     } else {
-      alert("Unexpected error: " + err.message || "Unknown error");
+      alert("Unexpected error: " + err.message);
     }
   } finally {
     setLoading(false);

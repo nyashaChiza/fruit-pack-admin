@@ -1,4 +1,4 @@
-// app/(admin)/products/page.tsx
+// app/(admin)/category/page.tsx
 import CategoryPage from "./CategoryPage";
 
 export const metadata = {

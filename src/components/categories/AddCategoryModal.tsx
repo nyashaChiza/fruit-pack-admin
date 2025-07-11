@@ -31,7 +31,7 @@ export default function AddCategoryModal({ isOpen, onClose, onSuccess }: Props) 
     setLoading(true);
 
     try {
-      await api.post("/category", form); // ✅ JSON body: { name, icon }
+      await api.post("/categories", form); // ✅ JSON body: { name, icon }
       onSuccess();
       onClose();
       setForm({ name: "", icon: "" });
