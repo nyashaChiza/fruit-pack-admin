@@ -51,7 +51,7 @@ export default function OrderPage() {
         orderId={selectedOrderId!}
         isOpen={showAssignDriverModal}
         onClose={() => setShowAssignDriverModal(false)}
-        onSuccess={fetchOrders}
+        onSuccess={fetchOrders} 
       />
 
       <UpdateOrderStatusModal
