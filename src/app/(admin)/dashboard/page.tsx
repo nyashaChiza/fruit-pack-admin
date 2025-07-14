@@ -1,4 +1,4 @@
-// app/(admin)/dashboard/Ecommerce.tsx
+// app/(admin)/dashboard/page
 "use client";
 
 import { useEffect, useState } from "react";
