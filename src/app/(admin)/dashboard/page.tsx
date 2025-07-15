@@ -3,7 +3,6 @@
 
 import { useEffect, useState } from "react";
 import { EcommerceMetrics } from "@/components/ecommerce/EcommerceMetrics";
-import MonthlySalesChart from "@/components/ecommerce/MonthlySalesChart";
 import RecentOrders from "@/components/ecommerce/RecentOrders";
 import { api } from "@/lib/api";
 

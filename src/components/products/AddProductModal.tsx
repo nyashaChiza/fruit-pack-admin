@@ -6,7 +6,6 @@ import Input from "@/components/form/input/InputField";
 import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal/index";
 import FileInput from "../form/input/FileInput";
-import { headers } from "next/headers";
 
 
 type Props = {
@@ -101,7 +100,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     console.error("❌ Failed to add product:", err);
 
     if (err.response) {
-      const { status, data } = err.response;
+      const {  data } = err.response;
       console.error("🔴 Error response:", data);
 
       const details = data?.detail;
