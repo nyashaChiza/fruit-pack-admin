@@ -8,11 +8,11 @@ function getToken(): string | null {
   return localStorage.getItem("auth_token");
 }
 
-export async function apiFetch<T = any>(
+export async function apiFetch<T = unknown>(
   endpoint: string,
   options: RequestInit = {},
   requireAuth: boolean = true
-): Promise<T> {
+): Promise<T>  {
   const headers = new Headers(options.headers || {});
   const isFormData = options.body instanceof FormData;
 
@@ -49,9 +49,10 @@ export async function apiFetch<T = any>(
 }
 
 export const api = {
-  get: <T = any>(url: string, requireAuth = true) =>
+  get: <T = unknown>(url: string, requireAuth = true) =>
     apiFetch<T>(url, { method: "GET" }, requireAuth),
-  put: <T = any>(url: string, body: any, requireAuth = true) => {
+
+  put: <T = unknown, TBody = unknown>(url: string, body: TBody, requireAuth = true) => {
     const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
     return apiFetch<T>(
       url,
@@ -62,7 +63,8 @@ export const api = {
       requireAuth
     );
   },
-  post: <T = any>(url: string, body: any, requireAuth = true) => {
+
+  post: <T = unknown, TBody = unknown>(url: string, body: TBody, requireAuth = true) => {
     const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
     return apiFetch<T>(
       url,
@@ -74,7 +76,6 @@ export const api = {
     );
   },
 };
-
 // 🔐 Auth Helpers
 export function getUserIdFromToken(token: string): string | null {
   try {
