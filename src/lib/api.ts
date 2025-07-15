@@ -1,4 +1,5 @@
 // lib/api.ts
+import { jwtDecode } from "jwt-decode"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE || "https://fruit-pack-api.onrender.com";
 
@@ -21,7 +22,6 @@ export async function apiFetch<T = any>(
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  // ❌ Don't set JSON headers if it's multipart/form-data
   if (!isFormData && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }
@@ -61,8 +61,7 @@ export const api = {
       },
       requireAuth
     );
-    },
-
+  },
   post: <T = any>(url: string, body: any, requireAuth = true) => {
     const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
     return apiFetch<T>(
@@ -75,3 +74,25 @@ export const api = {
     );
   },
 };
+
+// 🔐 Auth Helpers
+export function getUserIdFromToken(token: string): string | null {
+  try {
+    const decoded = jwtDecode(token);
+    return decoded.sub || null;
+  } catch (error) {
+    console.error('Error decoding token:', error);
+    return null;
+  }
+}
+
+
+export async function fetchCurrentUser() {
+  const token = getToken();
+  if (!token) throw new Error("Auth token missing");
+
+  const userId = getUserIdFromToken(token);
+  if (!userId) throw new Error("Could not extract user ID from token");
+
+  return await api.get(`/users/${userId}`);
+}

@@ -23,6 +23,7 @@ export default function RecentOrders({ orders, onAssignDriver, onUpdateStatus }:
         <table className="min-w-full table-auto">
           <thead className="border-y border-gray-100 dark:border-gray-800">
             <tr>
+              <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">#</th>
               <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Customer</th>
               <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Delivery Status</th>
               <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Payment Status</th>
@@ -35,6 +36,7 @@ export default function RecentOrders({ orders, onAssignDriver, onUpdateStatus }:
             {orders && orders.length > 0 ? (
               orders.map((order) => (
                 <tr key={order.id}>
+                  <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{order.id}</td>
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{order.customer_name}</td>
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{order.delivery_status}</td>
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{order.payment_status}</td>
