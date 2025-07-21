@@ -5,9 +5,9 @@ import { api } from "@/lib/api";
 import ClaimsTable from "@/components/claims/ClaimsTable";
 import ClaimStatusModal from "@/components/claims/SetClaimStatusClaimModal";
 type Claim = {
-  id: string | number;
-  driver_id: string;
-  order_id: string;
+  id:  number;
+  driver_id: number;
+  order_id: number;
   status: string;
 };
 export default function ClaimsPage() {
