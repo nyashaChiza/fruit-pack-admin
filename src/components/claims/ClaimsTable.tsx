@@ -1,17 +1,15 @@
 "use client";
 import React from "react";
 
-type Order = {
+type Claim = {
   id: string | number;
-  customer_name: string;
-  delivery_status: string;
-  payment_status: string;
-  payment_method: string;
-  total: string | number;
+  driver_id: string;
+  order_id: string;
+  status: string;
 };
 
 type Props = {
-  claims: Order[];
+  claims: Claim[];
   onSetStatus: (id: string | number) => void;
 };
 

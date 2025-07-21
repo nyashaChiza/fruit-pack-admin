@@ -5,9 +5,10 @@ import { api } from "@/lib/api";
 import ClaimsTable from "@/components/claims/ClaimsTable";
 import ClaimStatusModal from "@/components/claims/SetClaimStatusClaimModal";
 type Claim = {
-  id: string;
-  name: string;
-  // Add other driver fields as needed
+  id: string | number;
+  driver_id: string;
+  order_id: string;
+  status: string;
 };
 export default function ClaimsPage() {
   const [claims, setClaims] = useState<Claim[]>([]);
