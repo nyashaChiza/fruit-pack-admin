@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { api } from "@/lib/api";
 import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal/index";
+import { AxiosError } from "axios";
 
 type Props = {
   isOpen: boolean;
@@ -20,27 +21,37 @@ export default function ClaimStatusModal({
 }: Props) {
   const [loading, setLoading] = useState(false);
 
-  const handleAction = async (action: "approve" | "reject") => {
-    setLoading(true);
-    try {
-      await api.post(`/claims/admin/claims/${claimId}/${action}`, {});
-      onSuccess();
-      onClose();
-    } catch (err: any) {
-      console.error(`Failed to ${action} claim`, err);
-      const details = err.response?.data?.detail;
-      if (details && Array.isArray(details)) {
-        const formatted = details
-          .map((d: any) => `${d.loc?.join(".")}: ${d.msg}`)
-          .join("\n");
-        alert("Validation failed:\n" + formatted);
-      } else {
-        alert("Unexpected error: " + (err.message || "Unknown error"));
-      }
-    } finally {
-      setLoading(false);
+
+
+type ValidationErrorDetail = {
+  loc?: (string | number)[];
+  msg: string;
+  type?: string;
+};
+
+const handleAction = async (action: "approve" | "reject") => {
+  setLoading(true);
+  try {
+    await api.post(`/claims/admin/claims/${claimId}/${action}`, {});
+    onSuccess();
+    onClose();
+  } catch (err) {
+    const axiosError = err as AxiosError<{ detail?: ValidationErrorDetail[] }>;
+    console.error(`Failed to ${action} claim`, axiosError);
+
+    const details = axiosError.response?.data?.detail;
+    if (Array.isArray(details)) {
+      const formatted = details
+        .map((d: ValidationErrorDetail) => `${d.loc?.join(".")}: ${d.msg}`)
+        .join("\n");
+      alert("Validation failed:\n" + formatted);
+    } else {
+      alert("Unexpected error: " + (axiosError.message || "Unknown error"));
     }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

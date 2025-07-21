@@ -7,12 +7,43 @@ import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal/index";
 import FileInput from "../form/input/FileInput";
 
-
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 };
+
+type Supplier = {
+  id: string | number;
+  name: string;
+};
+
+type Category = {
+  id: string | number;
+  name: string;
+};
+
+type ValidationDetail = {
+  loc?: (string | number)[];
+  msg: string;
+  type?: string;
+};
+
+function isApiValidationError(err: unknown): err is {
+  response: { data: { detail: ValidationDetail[] } };
+} {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    "response" in err &&
+    Array.isArray(
+  typeof (err as { response?: { data?: { detail?: unknown } } }).response?.data?.detail === "object"
+    ? (err as { response: { data: { detail: unknown } } }).response.data.detail
+    : []
+)
+
+  );
+}
 
 export default function AddProductModal({ isOpen, onClose, onSuccess }: Props) {
   const [form, setForm] = useState({
@@ -26,25 +57,40 @@ export default function AddProductModal({ isOpen, onClose, onSuccess }: Props) {
   });
   const [image, setImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [suppliers, setSuppliers] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
 useEffect(() => {
-  if (!isOpen) return; // Only fetch when modal is shown
+  if (!isOpen) return;
 
-  api.get("/suppliers")
+  api.get<Supplier[]>("/suppliers")
     .then(setSuppliers)
-    .catch((err) => console.error("Failed to fetch suppliers", err));
+    .catch((err: unknown) => {
+      if (err instanceof Error) {
+        console.error("Failed to fetch suppliers:", err.message);
+      } else {
+        console.error("Unknown error while fetching suppliers");
+      }
+    });
 
-  api.get("/categories")
+  api.get<Category[]>("/categories")
     .then(setCategories)
-    .catch((err) => console.error("Failed to fetch categories", err));
+    .catch((err: unknown) => {
+      if (err instanceof Error) {
+        console.error("Failed to fetch categories:", err.message);
+      } else {
+        console.error("Unknown error while fetching categories");
+      }
+    });
+
 }, [isOpen]);
 
-  
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,170 +99,118 @@ useEffect(() => {
     }
   };
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
 
-  const formData = new FormData();
+    const formData = new FormData();
+    formData.append("name", form.name);
+    formData.append("description", form.description);
+    formData.append("supplier_id", String(form.supplier_id));
+    formData.append("price", String(form.price));
+    formData.append("stock", String(form.stock));
+    formData.append("unit", form.unit);
+    if (form.category_id.trim()) {
+      formData.append("category_id", form.category_id);
+    }
+    if (image) {
+      formData.append("image", image);
+    }
 
-  formData.append("name", form.name || "");
-  formData.append("description", form.description || "");
-  formData.append("supplier_id", String(form.supplier_id));
-  formData.append("price", String(form.price));
-  formData.append("stock", String(form.stock));
-  formData.append("unit", form.unit);
+    try {
+      const response = await api.post("/products", formData);
+      console.log("✅ Product created:", response);
+      onSuccess();
+      onClose();
+      setForm({
+        name: "",
+        description: "",
+        supplier_id: "",
+        category_id: "",
+        price: "",
+        stock: "",
+        unit: "",
+      });
+      setImage(null);
+    } catch (err: unknown) {
+      console.error("❌ Failed to add product:", err);
 
-  if (form.category_id?.trim()) {
-    formData.append("category_id", String(form.category_id));
-  }
-
-  if (image) {
-    formData.append("image", image);
-  }
-
-  // Debug: log actual FormData
-  console.log("🧪 Submitting FormData:");
-  for (const [key, val] of formData.entries()) {
-    console.log(`${key}:`, val);
-  }
-
-  try {
-    const response = await api.post("/products", formData); 
-    console.log("✅ Product created:", response.data);
-
-    onSuccess();
-    onClose();
-    setForm({
-      name: "",
-      description: "",
-      supplier_id: "",
-      category_id: "",
-      price: "",
-      stock: "",
-      unit: "",
-    });
-    setImage(null);
-  } catch (err: any) {
-    console.error("❌ Failed to add product:", err);
-
-    if (err.response) {
-      const {  data } = err.response;
-      console.error("🔴 Error response:", data);
-
-      const details = data?.detail;
-      if (Array.isArray(details)) {
+      if (isApiValidationError(err)) {
+        const details = err.response.data.detail;
         const formatted = details
-          .map((d: any) => `${d.loc?.join(".")}: ${d.msg}`)
+          .map((d) => `${d.loc?.join(".")}: ${d.msg}`)
           .join("\n");
         alert("Validation failed:\n" + formatted);
+      } else if (err instanceof Error) {
+        alert("Unexpected error: " + err.message);
       } else {
-        alert("Unexpected error: " + (err.message || "Unknown error"));
+        alert("Unexpected unknown error");
       }
-    } else {
-      alert("Unexpected error: " + err.message);
+    } finally {
+      setLoading(false);
     }
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} >
-        <div className="p-6 sm:p-8">
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <div className="p-6 sm:p-8">
         <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">Add Product</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-            <Input placeholder="Product Name" name="name" value={form.name} onChange={handleChange} required />
-            <Input
-            placeholder="Description"
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            required
-            />
-            <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">
-                Supplier
-            </label>
+          <Input name="name" placeholder="Product Name" value={form.name} onChange={handleChange} required />
+          <Input name="description" placeholder="Description" value={form.description} onChange={handleChange} required />
+
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">Supplier</label>
             <select
-                name="supplier_id"
-                value={form.supplier_id}
-                onChange={handleChange}
-                required
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+              name="supplier_id"
+              value={form.supplier_id}
+              onChange={handleChange}
+              required
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white"
             >
-                <option value="">Select Supplier</option>
-                {suppliers.map((s: any) => (
-                <option key={s.name} value={s.id}>
-                    {s.name}
+              <option value="">Select Supplier</option>
+              {suppliers.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.name}
                 </option>
-                ))}
+              ))}
             </select>
-            </div>
+          </div>
 
-            <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">
-                    Category
-                </label>
-                <select
-                    name="category_id"
-                    value={form.category_id}
-                    onChange={handleChange}
-                    required
-                    className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-                >
-                    <option value="">Select Category</option>
-                    {categories.map((c: any) => (
-                    <option key={c.name} value={c.id}>
-                        {c.name}
-                    </option>
-                    ))}
-                </select>
-            </div>
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">Category</label>
+            <select
+              name="category_id"
+              value={form.category_id}
+              onChange={handleChange}
+              required
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+            >
+              <option value="">Select Category</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
-            <Input
-            placeholder="Price"
-            name="price"
-            type="number"
-            step="0.01"
-            value={form.price}
-            onChange={handleChange}
-            required
-            />
-            <Input
-            placeholder="Stock"
-            name="stock"
-            type="number"
-            value={form.stock}
-            onChange={handleChange}
-            required
-            />
-            <Input
-            placeholder="Unit"
-            name="unit"
-            value={form.unit}
-            onChange={handleChange}
-            required
-            />
-            <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">
-                Image
-            </label>
-            <FileInput
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                required
-                
-            />
-            </div>
+          <Input name="price" type="number" step="0.01" placeholder="Price" value={form.price} onChange={handleChange} required />
+          <Input name="stock" type="number" placeholder="Stock" value={form.stock} onChange={handleChange} required />
+          <Input name="unit" placeholder="Unit" value={form.unit} onChange={handleChange} required />
 
-            <div className="pt-2 text-right">
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">Image</label>
+            <FileInput type="file" accept="image/*" onChange={handleFileChange} required />
+          </div>
+
+          <div className="pt-2 text-right">
             <Button type="submit" disabled={loading}>
-                {loading ? "Saving..." : "Add Product"}
+              {loading ? "Saving..." : "Add Product"}
             </Button>
-            </div>
+          </div>
         </form>
-        </div>
+      </div>
     </Modal>
   );
 }

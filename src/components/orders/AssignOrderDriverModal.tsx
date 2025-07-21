@@ -12,6 +12,36 @@ type Props = {
   onSuccess: () => void;
 };
 
+type Driver = {
+  id: number;
+  vehicle_number: string;
+  status: string;
+};
+
+type ValidationDetail = {
+  loc?: (string | number)[];
+  msg: string;
+  type?: string;
+};
+
+type ApiErrorResponse = {
+  response: {
+    data: {
+      detail: ValidationDetail[];
+    };
+  };
+};
+
+function isApiValidationError(err: unknown): err is ApiErrorResponse {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    "response" in err &&
+    typeof (err as Record<string, unknown>).response === "object" &&
+    Array.isArray((err as ApiErrorResponse).response?.data?.detail)
+  );
+}
+
 export default function AssignOrderDriverModal({
   orderId,
   isOpen,
@@ -19,16 +49,22 @@ export default function AssignOrderDriverModal({
   onSuccess,
 }: Props) {
   const [form, setForm] = useState({ driverId: "" });
-  const [drivers, setDrivers] = useState<any[]>([]);
+  const [drivers, setDrivers] = useState<Driver[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // 🚀 Fetch drivers when modal opens
   useEffect(() => {
     if (!isOpen) return;
+
     api
-      .get("/drivers")
-      .then((data) => setDrivers(data))
-      .catch((err) => console.error("Failed to fetch drivers", err));
+      .get<Driver[]>("/drivers")
+      .then(setDrivers)
+      .catch((err: unknown) => {
+        if (err instanceof Error) {
+          console.error("Failed to fetch drivers:", err.message);
+        } else {
+          console.error("Unknown error while fetching drivers");
+        }
+      });
   }, [isOpen]);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -41,22 +77,25 @@ export default function AssignOrderDriverModal({
 
     try {
       await api.put(`/orders/${orderId}/assign-driver`, {
-        driver_id: Number(form.driverId), // backend expects an int
+        driver_id: Number(form.driverId),
       });
 
       onSuccess();
       onClose();
       setForm({ driverId: "" });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to assign driver", err);
-      const details = err.response?.data?.detail;
-      if (Array.isArray(details)) {
+
+      if (isApiValidationError(err)) {
+        const details = err.response.data.detail;
         alert(
           "Validation failed:\n" +
-            details.map((d: any) => `${d.loc?.join(".")}: ${d.msg}`).join("\n")
+            details.map((d) => `${d.loc?.join(".")}: ${d.msg}`).join("\n")
         );
+      } else if (err instanceof Error) {
+        alert("Unexpected error: " + err.message);
       } else {
-        alert("Unexpected error: " + (err.message || "Unknown error"));
+        alert("Unexpected unknown error");
       }
     } finally {
       setLoading(false);
@@ -85,7 +124,7 @@ export default function AssignOrderDriverModal({
               <option value="">-- Choose a driver --</option>
               {drivers.map((driver) => (
                 <option key={driver.id} value={driver.id}>
-                  {driver.vehicle_number} - {driver.status} 
+                  {driver.vehicle_number} - {driver.status}
                 </option>
               ))}
             </select>

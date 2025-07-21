@@ -12,11 +12,33 @@ type Props = {
   onSuccess: () => void;
 };
 
+type ValidationDetail = {
+  loc?: (string | number)[];
+  msg: string;
+  type?: string;
+};
+
+function isApiValidationError(err: unknown): err is {
+  response: { data: { detail: ValidationDetail[] } };
+} {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    "response" in err &&
+    typeof (err as { response?: { data?: { detail?: unknown } } }).response?.data?.detail !==
+  "undefined" &&
+Array.isArray(
+  (err as { response?: { data?: { detail?: unknown } } }).response?.data?.detail
+)
+
+  );
+}
+
 export default function AddSupplierModal({ isOpen, onClose, onSuccess }: Props) {
   const [form, setForm] = useState({
-    "name": "string",
-    "contact_email": "string",
-    "phone_number": "string"
+    name: "",
+    contact_email: "",
+    phone_number: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -32,21 +54,23 @@ export default function AddSupplierModal({ isOpen, onClose, onSuccess }: Props) 
     setLoading(true);
 
     try {
-      await api.post("/suppliers/", form); // ✅ JSON body: { name, icon }
+      await api.post("/suppliers/", form);
       onSuccess();
       onClose();
       setForm({ name: "", contact_email: "", phone_number: "" });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to add supplier", err);
 
-      const details = err.response?.data?.detail;
-      if (details && Array.isArray(details)) {
+      if (isApiValidationError(err)) {
+        const details = err.response.data.detail;
         const formatted = details
-          .map((d: any) => `${d.loc?.join(".")}: ${d.msg}`)
+          .map((d) => `${d.loc?.join(".")}: ${d.msg}`)
           .join("\n");
         alert("Validation failed:\n" + formatted);
+      } else if (err instanceof Error) {
+        alert("Unexpected error: " + err.message);
       } else {
-        alert("Unexpected error: " + err.message || "Unknown error");
+        alert("Unknown error occurred.");
       }
     } finally {
       setLoading(false);
@@ -77,7 +101,7 @@ export default function AddSupplierModal({ isOpen, onClose, onSuccess }: Props) 
           <Input
             placeholder="Phone Number"
             name="phone_number"
-            value={form.contact_email}
+            value={form.phone_number}
             onChange={handleChange}
             required
           />

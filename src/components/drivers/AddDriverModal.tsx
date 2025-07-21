@@ -33,61 +33,94 @@ export default function AddDriverModal({ isOpen, onClose, onSuccess }: Props) {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+type ValidationDetail = {
+  loc?: (string | number)[];
+  msg: string;
+  type?: string;
+};
 
-    try {
-      // 1. Create user
-      const userPayload = {
-        email: form.email,
-        username: form.username,
-        full_name: form.full_name,
-        is_active: true,
-        role: "driver",
-        password: form.password,
-      };
-      const userRes = await api.post("/users/", userPayload);
-      const userId = userRes.id || userRes.user?.id;
-
-      if (!userId) throw new Error("User creation failed: No ID returned");
-
-      // 2. Create driver with the user ID
-      const driverPayload = {
-        vehicle_number: form.vehicle_number,
-        is_active: true,
-        status: form.status || "available",
-        user_id: userId,
-      };
-      await api.post("/drivers", driverPayload);
-
-      onSuccess();
-      onClose();
-      setForm({
-        email: "",
-        username: "",
-        full_name: "",
-        password: "",
-        vehicle_number: "",
-        status: "available",
-        is_active: true,
-      });
-    } catch (err: any) {
-      console.error("❌ Failed to add driver:", err);
-      const details = err.response?.data?.detail;
-
-      if (Array.isArray(details)) {
-        const formatted = details
-          .map((d: any) => `${d.loc?.join(".")}: ${d.msg}`)
-          .join("\n");
-        alert("Validation failed:\n" + formatted);
-      } else {
-        alert("Unexpected error: " + (err.message || "Unknown error"));
-      }
-    } finally {
-      setLoading(false);
-    }
+type ApiErrorResponse = {
+  response: {
+    data: {
+      detail: ValidationDetail[];
+    };
   };
+};
+
+function isApiValidationError(err: unknown): err is ApiErrorResponse {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    "response" in err &&
+    typeof (err as Record<string, unknown>).response === "object" &&
+    Array.isArray((err as ApiErrorResponse).response?.data?.detail)
+  );
+}
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setLoading(true);
+
+  try {
+    // 1. Create user
+    const userPayload = {
+      email: form.email,
+      username: form.username,
+      full_name: form.full_name,
+      is_active: true,
+      role: "driver",
+      password: form.password,
+    };
+
+    const userRes = await api.post("/users/", userPayload);
+
+    // Support flexible backend response shape
+    const userId: number | undefined =
+      (userRes as { id?: number })?.id ??
+      (userRes as { user?: { id?: number } })?.user?.id;
+
+    if (!userId) {
+      throw new Error("User creation failed: No ID returned");
+    }
+
+    // 2. Create driver with the user ID
+    const driverPayload = {
+      vehicle_number: form.vehicle_number,
+      is_active: true,
+      status: form.status || "available",
+      user_id: userId,
+    };
+    await api.post("/drivers", driverPayload);
+
+    onSuccess();
+    onClose();
+    setForm({
+      email: "",
+      username: "",
+      full_name: "",
+      password: "",
+      vehicle_number: "",
+      status: "available",
+      is_active: true,
+    });
+  } catch (err: unknown) {
+    console.error("❌ Failed to add driver:", err);
+
+    if (isApiValidationError(err)) {
+      const details = err.response.data.detail;
+      const formatted = details
+        .map((d) => `${d.loc?.join(".")}: ${d.msg}`)
+        .join("\n");
+      alert("Validation failed:\n" + formatted);
+    } else if (err instanceof Error) {
+      alert("Unexpected error: " + err.message);
+    } else {
+      alert("Unexpected unknown error");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

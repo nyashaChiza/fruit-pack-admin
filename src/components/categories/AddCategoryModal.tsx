@@ -5,11 +5,18 @@ import { api } from "@/lib/api";
 import Input from "@/components/form/input/InputField";
 import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal/index";
+import { AxiosError } from "axios";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+};
+
+type ValidationErrorDetail = {
+  loc?: (string | number)[];
+  msg: string;
+  type?: string;
 };
 
 export default function AddCategoryModal({ isOpen, onClose, onSuccess }: Props) {
@@ -35,17 +42,18 @@ export default function AddCategoryModal({ isOpen, onClose, onSuccess }: Props) 
       onSuccess();
       onClose();
       setForm({ name: "", icon: "" });
-    } catch (err: any) {
-      console.error("Failed to add category", err);
+    } catch (err) {
+      const axiosError = err as AxiosError<{ detail?: ValidationErrorDetail[] }>;
+      console.error("Failed to add category", axiosError);
 
-      const details = err.response?.data?.detail;
-      if (details && Array.isArray(details)) {
+      const details = axiosError.response?.data?.detail;
+      if (Array.isArray(details)) {
         const formatted = details
-          .map((d: any) => `${d.loc?.join(".")}: ${d.msg}`)
+          .map((d: ValidationErrorDetail) => `${d.loc?.join(".")}: ${d.msg}`)
           .join("\n");
         alert("Validation failed:\n" + formatted);
       } else {
-        alert("Unexpected error: " + err.message || "Unknown error");
+        alert("Unexpected error: " + (axiosError.message || "Unknown error"));
       }
     } finally {
       setLoading(false);
@@ -53,33 +61,27 @@ export default function AddCategoryModal({ isOpen, onClose, onSuccess }: Props) 
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <div className="p-6 sm:p-8">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
-          Add Category
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <Input
-            placeholder="Category Name"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-          <Input
-            placeholder="Icon (e.g. 🍎 or fa-icon)"
-            name="icon"
-            value={form.icon}
-            onChange={handleChange}
-            required
-          />
-          <div className="pt-2 text-right">
-            <Button type="submit" disabled={loading}>
-              {loading ? "Saving..." : "Add Category"}
-            </Button>
-          </div>
-        </form>
-      </div>
+    <Modal isOpen={isOpen} onClose={onClose} title="Add Category">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          name="name"
+          value={form.name}
+          label="Category Name"
+          placeholder="e.g. Fresh Fruits"
+          onChange={handleChange}
+          required
+        />
+        <Input
+          name="icon"
+          value={form.icon}
+          label="Icon (optional)"
+          placeholder="e.g. 🍓"
+          onChange={handleChange}
+        />
+        <Button type="submit" disabled={loading}>
+          {loading ? "Adding..." : "Add Category"}
+        </Button>
+      </form>
     </Modal>
   );
 }
