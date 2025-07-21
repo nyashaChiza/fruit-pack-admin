@@ -54,7 +54,7 @@ export const EcommerceMetrics = ({
       <MetricCard
         label="Drivers"
         count={driversCount}
-        icon={<TruckIcon className="text-gray-800 dark:text-white/90" />}
+        icon={<BoxIconLine className="text-gray-800 dark:text-white/90" />}
         badgeType="error"
         badgeValue="9.05%"
       />
