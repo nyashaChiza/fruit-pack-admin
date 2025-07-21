@@ -52,7 +52,7 @@ export default function AddProductModal({ isOpen, onClose, onSuccess }: Props) {
     supplier_id: "",
     category_id: "",
     price: 1,
-    stock: "",
+    stock: 0,
     unit: "",
   });
   const [image, setImage] = useState<File | null>(null);
@@ -89,8 +89,16 @@ useEffect(() => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]:
+        type === "number"
+          ? value === ""
+            ? ""
+            : Number(value)
+          : value,
+    }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
