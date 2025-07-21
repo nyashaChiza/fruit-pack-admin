@@ -5,8 +5,15 @@ import { api } from "@/lib/api";
 import ProductsTable from "@/components/products/ProductsTable";
 import AddProductModal from "@/components/products/AddProductModal";
 
+type Product = {
+  id: number ;
+  name: string;
+  unit: string;
+  price: number;
+  stock: number;
+};
 export default function ProductsPage() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   
@@ -14,7 +21,7 @@ export default function ProductsPage() {
   const fetchProducts = () => {
     setLoading(true);
     api
-      .get("/products")
+      .get<Product[]>("/products")
       .then(setProducts)
       .catch((err) => console.error("Fetch error", err))
       .finally(() => setLoading(false));
