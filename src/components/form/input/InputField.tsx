@@ -5,10 +5,12 @@ interface InputProps {
   id?: string;
   name?: string;
   placeholder?: string;
+  value?: string | number; // Added value prop for controlled input
   defaultValue?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   min?: string;
+  required?: boolean; // Optional prop to indicate if the input is required
   max?: string;
   step?: number;
   disabled?: boolean;
@@ -23,8 +25,10 @@ const Input: FC<InputProps> = ({
   name,
   placeholder,
   defaultValue,
+  value,
   onChange,
   className = "",
+  required = false,
   min,
   max,
   step,
@@ -48,22 +52,24 @@ const Input: FC<InputProps> = ({
   }
 
   return (
-    <div className="relative">
+    <div>
       <input
         type={type}
         id={id}
         name={name}
         placeholder={placeholder}
-        defaultValue={defaultValue}
-        onChange={onChange}
+        required={required}
+
+        {...(value !== undefined
+          ? { value, onChange }
+          : { defaultValue, onChange })}
         min={min}
         max={max}
         step={step}
         disabled={disabled}
         className={inputClasses}
       />
-
-      {/* Optional Hint Text */}
+      {/* Display hint text if provided */}
       {hint && (
         <p
           className={`mt-1.5 text-xs ${

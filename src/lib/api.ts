@@ -40,7 +40,7 @@ export async function apiFetch<T = unknown>(
       error: errorData,
     });
     const message = Array.isArray(errorData.detail)
-      ? errorData.detail.map((e) => e.msg || JSON.stringify(e)).join(", ")
+      ? errorData.detail.map((e: { msg?: string }) => e.msg || JSON.stringify(e)).join(", ")
       : errorData.detail || `API error: ${response.status}`;
     throw new Error(message);
   }
