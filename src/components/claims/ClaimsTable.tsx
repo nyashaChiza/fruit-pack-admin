@@ -3,8 +3,8 @@ import React from "react";
 
 type Claim = {
   id: string | number;
-  driver_id: string;
-  order_id: string;
+  driver_id: number;
+  order_id: number;
   status: string;
 };
 
