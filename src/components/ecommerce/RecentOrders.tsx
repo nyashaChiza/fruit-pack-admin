@@ -7,7 +7,7 @@ type Order = {
   delivery_status: string;
   payment_status: string;
   payment_method: string;
-  total: string | number;
+  total: number;
 };
 
 type Props = {
