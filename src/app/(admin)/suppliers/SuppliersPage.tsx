@@ -4,9 +4,14 @@ import React, { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import SupplierTable from "@/components/suppliers/SupplierTable";
 import AddSupplierModal from "@/components/suppliers/AddSupplier";
-
+type Supplier = {
+  id: number | string;
+  name: string;
+  contact_email: string;
+  phone_number: string;
+};
 export default function SupplierPage() {
-  const [suppliers, setSuppliers] = useState([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   
@@ -14,7 +19,7 @@ export default function SupplierPage() {
   const fetchSuppliers = () => {
     setLoading(true);
     api
-      .get("/suppliers")
+      .get<Supplier[]>("/suppliers")
       .then(setSuppliers)
       .catch((err) => console.error("Fetch error", err))
       .finally(() => setLoading(false));
