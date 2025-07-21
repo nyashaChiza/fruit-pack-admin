@@ -14,7 +14,7 @@ export default function ClaimsPage() {
   const [claims, setClaims] = useState<Claim[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
+  const [selectedClaimId, setSelectedClaimId] = useState<number | null>(null);
   const [showClaimStatusModal, setShowClaimStatusModal] = useState(false);
 
   const fetchClaims = () => {
@@ -42,7 +42,7 @@ export default function ClaimsPage() {
       <ClaimsTable
         claims={claims}
         onSetStatus={(claimId) => {
-          setSelectedClaimId(claimId);
+          setSelectedClaimId(Number(claimId));
           setShowClaimStatusModal(true);
         }}
       />

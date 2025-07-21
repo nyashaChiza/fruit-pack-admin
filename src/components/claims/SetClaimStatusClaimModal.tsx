@@ -10,7 +10,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  claimId: string;
+  claimId: number;
 };
 
 export default function ClaimStatusModal({
