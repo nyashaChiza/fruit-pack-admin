@@ -5,7 +5,7 @@ import { api } from "@/lib/api";
 import Input from "@/components/form/input/InputField";
 import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal/index";
-import { AxiosError } from "axios";
+
 
 type Props = {
   isOpen: boolean;
@@ -43,10 +43,12 @@ export default function AddCategoryModal({ isOpen, onClose, onSuccess }: Props) 
       onClose();
       setForm({ name: "", icon: "" });
     } catch (err) {
-      const axiosError = err as AxiosError<{ detail?: ValidationErrorDetail[] }>;
+      const axiosError = err as {
+        message: string; detail?: ValidationErrorDetail[] 
+};
       console.error("Failed to add category", axiosError);
 
-      const details = axiosError.response?.data?.detail;
+      const details = axiosError.detail;
       if (Array.isArray(details)) {
         const formatted = details
           .map((d: ValidationErrorDetail) => `${d.loc?.join(".")}: ${d.msg}`)
@@ -61,12 +63,11 @@ export default function AddCategoryModal({ isOpen, onClose, onSuccess }: Props) 
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Add Category">
+    <Modal isOpen={isOpen} onClose={onClose}>
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           name="name"
           value={form.name}
-          label="Category Name"
           placeholder="e.g. Fresh Fruits"
           onChange={handleChange}
           required
@@ -74,7 +75,6 @@ export default function AddCategoryModal({ isOpen, onClose, onSuccess }: Props) 
         <Input
           name="icon"
           value={form.icon}
-          label="Icon (optional)"
           placeholder="e.g. 🍓"
           onChange={handleChange}
         />

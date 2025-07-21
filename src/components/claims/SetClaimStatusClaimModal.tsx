@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { api } from "@/lib/api";
 import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal/index";
-import { AxiosError } from "axios";
+import type { AxiosError } from "axios";
 
 type Props = {
   isOpen: boolean;
@@ -37,7 +37,6 @@ const handleAction = async (action: "approve" | "reject") => {
     onClose();
   } catch (err) {
     const axiosError = err as AxiosError<{ detail?: ValidationErrorDetail[] }>;
-    console.error(`Failed to ${action} claim`, axiosError);
 
     const details = axiosError.response?.data?.detail;
     if (Array.isArray(details)) {
