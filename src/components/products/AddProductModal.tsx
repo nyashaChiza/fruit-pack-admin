@@ -136,7 +136,7 @@ useEffect(() => {
         supplier_id: "",
         category_id: "",
         price: 1,
-        stock: "",
+        stock: 0,
         unit: "",
       });
       setImage(null);
