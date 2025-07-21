@@ -107,7 +107,7 @@ useEffect(() => {
     formData.append("name", form.name);
     formData.append("description", form.description);
     formData.append("supplier_id", String(form.supplier_id));
-    formData.append("price", form.price);
+    formData.append("price", String(form.price));
     formData.append("stock", String(form.stock));
     formData.append("unit", form.unit);
     if (form.category_id.trim()) {
@@ -127,7 +127,7 @@ useEffect(() => {
         description: "",
         supplier_id: "",
         category_id: "",
-        price: "",
+        price: 1,
         stock: "",
         unit: "",
       });
