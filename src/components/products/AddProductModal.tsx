@@ -203,7 +203,7 @@ useEffect(() => {
             </select>
           </div>
 
-          <Input name="price" type="number" step="0.01" placeholder="Price" value={form.price} onChange={handleChange} required />
+          <Input name="price" type="number" step={0.01} placeholder="Price" value={form.price} onChange={handleChange} required />
           <Input name="stock" type="number" placeholder="Stock" value={form.stock} onChange={handleChange} required />
           <Input name="unit" placeholder="Unit" value={form.unit} onChange={handleChange} required />
 
