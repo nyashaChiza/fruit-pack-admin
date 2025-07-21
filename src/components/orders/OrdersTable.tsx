@@ -12,8 +12,8 @@ type Order = {
 
 type Props = {
   orders: Order[];
-  onAssignDriver: (id: string | number) => void;
-  onUpdateStatus: (id: string | number) => void;
+  onAssignDriver: (id: number) => void;
+  onUpdateStatus: (id: number) => void;
 };
 
 export default function RecentOrders({ orders, onAssignDriver, onUpdateStatus }: Props) {
@@ -44,13 +44,13 @@ export default function RecentOrders({ orders, onAssignDriver, onUpdateStatus }:
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">R{Number(order.total).toFixed(2)}</td>
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300 space-x-2">
                     <button
-                      onClick={() => onAssignDriver(order.id)}
+                      onClick={() => onAssignDriver(Number(order.id))}
                       className="text-blue-600 hover:underline"
                     >
                       Assign Driver
                     </button>
                     <button
-                      onClick={() => onUpdateStatus(order.id)}
+                      onClick={() => onUpdateStatus(Number(order.id))}
                       className="text-green-600 hover:underline"
                     >
                       Update Status

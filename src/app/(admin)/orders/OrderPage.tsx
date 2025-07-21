@@ -5,19 +5,26 @@ import { api } from "@/lib/api";
 import RecentOrders from "@/components/orders/OrdersTable";
 import AssignOrderDriverModal from "@/components/orders/AssignOrderDriverModal";
 import UpdateOrderStatusModal from "@/components/orders/UpdateOrderStatusModal";
-
+type Order = {
+  id: string | number;
+  customer_name: string;
+  delivery_status: string;
+  payment_status: string;
+  payment_method: string;
+  total: string | number;
+};
 export default function OrderPage() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [selectedOrderId, setSelectedOrderId] = useState<number | null>(null);
   const [showAssignDriverModal, setShowAssignDriverModal] = useState(false);
   const [showUpdateStatusModal, setShowUpdateStatusModal] = useState(false);
 
   const fetchOrders = () => {
     setLoading(true);
     api
-      .get("/orders")
+      .get<Order[]>("/orders")
       .then(setOrders)
       .catch((err) => console.error("Fetch error", err))
       .finally(() => setLoading(false));

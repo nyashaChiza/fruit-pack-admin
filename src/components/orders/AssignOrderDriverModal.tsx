@@ -6,7 +6,7 @@ import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal/index";
 
 type Props = {
-  orderId: string;
+  orderId: number;
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
