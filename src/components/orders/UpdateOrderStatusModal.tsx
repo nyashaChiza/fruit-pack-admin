@@ -53,7 +53,8 @@ export function UpdateOrderStatusModal({
       onSuccess();
       onClose();
     } catch (err) {
-      alert(`Failed to update order status: {err.message}`);
+      console.log(err)
+      alert(`Failed to update order status: ${err}`);
     } finally {
       setLoading(false);
     }
