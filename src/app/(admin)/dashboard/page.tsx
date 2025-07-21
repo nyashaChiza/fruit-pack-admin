@@ -6,16 +6,21 @@ import { EcommerceMetrics } from "@/components/ecommerce/EcommerceMetrics";
 import RecentOrders from "@/components/ecommerce/RecentOrders";
 import { api } from "@/lib/api";
 
-const fetchUsers = () => api.get("/users");
-const fetchProducts = () => api.get("/products");
-const fetchOrders = () => api.get("/orders");
-const fetchDrivers = () => api.get("/drivers");
+type User = any;     // Replace 'any' with your actual User type/interface
+type Product = any;  // Replace 'any' with your actual Product type/interface
+type Order = any;    // Replace 'any' with your actual Order type/interface
+type Driver = any;   // Replace 'any' with your actual Driver type/interface
+
+const fetchUsers = (): Promise<User[]> => api.get("/users");
+const fetchProducts = (): Promise<Product[]> => api.get("/products");
+const fetchOrders = (): Promise<Order[]> => api.get("/orders");
+const fetchDrivers = (): Promise<Driver[]> => api.get("/drivers");
 
 export default function Ecommerce() {
-  const [users, setUsers] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [orders, setOrders] = useState([]);
-  const [drivers, setDrivers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [drivers, setDrivers] = useState<Driver[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
