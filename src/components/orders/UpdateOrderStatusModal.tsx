@@ -2,151 +2,58 @@
 
 import React, { useState, useEffect } from "react";
 import { api } from "@/lib/api";
-import Input from "@/components/form/input/InputField";
 import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal/index";
-import FileInput from "../form/input/FileInput";
 
-type Props = {
+
+
+type UpdateOrderStatusModalProps = {
+  orderId: string | number;
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 };
 
-type Supplier = {
-  id: string | number;
-  name: string;
-};
+const statusOptions = [
+  { value: "pending", label: "Pending" },
+  { value: "processing", label: "Processing" },
+  { value: "shipped", label: "Shipped" },
+  { value: "delivered", label: "Delivered" },
+  { value: "cancelled", label: "Cancelled" },
+];
 
-type Category = {
-  id: string | number;
-  name: string;
-};
-
-type ValidationDetail = {
-  loc?: (string | number)[];
-  msg: string;
-  type?: string;
-};
-
-type ApiErrorResponse = {
-  response: {
-    data: {
-      detail: ValidationDetail[];
-    };
-  };
-};
-
-function isApiValidationError(err: unknown): err is ApiErrorResponse {
-  return (
-    typeof err === "object" &&
-    err !== null &&
-    "response" in err &&
-    typeof (err as Record<string, unknown>).response === "object" &&
-    Array.isArray((err as ApiErrorResponse).response?.data?.detail)
-  );
-}
-
-export default function AddProductModal({ isOpen, onClose, onSuccess }: Props) {
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-    supplier_id: "",
-    category_id: "",
-    price: "",
-    stock: "",
-    unit: "",
-  });
-  const [image, setImage] = useState<File | null>(null);
+export function UpdateOrderStatusModal({
+  orderId,
+  isOpen,
+  onClose,
+  onSuccess,
+}: UpdateOrderStatusModalProps) {
+  const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
     if (!isOpen) return;
-
-    api.get<Supplier[]>("/suppliers")
-      .then(setSuppliers)
-      .catch((err: unknown) => {
-        if (err instanceof Error) {
-          console.error("Failed to fetch suppliers:", err.message);
-        } else {
-          console.error("Unknown error while fetching suppliers");
-        }
-      });
-
-    api.get<Category[]>("/categories")
-      .then(setCategories)
-      .catch((err: unknown) => {
-        if (err instanceof Error) {
-          console.error("Failed to fetch categories:", err.message);
-        } else {
-          console.error("Unknown error while fetching categories");
-        }
-      });
-
-  }, [isOpen]);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+    setStatus("");
+    if (orderId) {
+      api.get<{ status: string }>(`/orders/${orderId}`)
+        .then((data) => setStatus(data.status))
+        .catch(() => setStatus(""));
     }
+  }, [isOpen, orderId]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatus(e.target.value);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    const formData = new FormData();
-    formData.append("name", form.name);
-    formData.append("description", form.description);
-    formData.append("supplier_id", String(form.supplier_id));
-    formData.append("price", String(form.price));
-    formData.append("stock", String(form.stock));
-    formData.append("unit", form.unit);
-    if (form.category_id.trim()) {
-      formData.append("category_id", form.category_id);
-    }
-    if (image) {
-      formData.append("image", image);
-    }
-
     try {
-      const response = await api.post("/products", formData);
-      console.log("✅ Product created:", response);
+      await api.put(`/orders/${orderId}/status`, { status });
       onSuccess();
       onClose();
-      setForm({
-        name: "",
-        description: "",
-        supplier_id: "",
-        category_id: "",
-        price: "",
-        stock: "",
-        unit: "",
-      });
-      setImage(null);
-    } catch (err: unknown) {
-      console.error("❌ Failed to add product:", err);
-
-      if (isApiValidationError(err)) {
-        const details = err.response.data.detail;
-        const formatted = details
-          .map((d) => `${d.loc?.join(".")}: ${d.msg}`)
-          .join("\n");
-        alert("Validation failed:\n" + formatted);
-      } else if (err instanceof Error) {
-        alert("Unexpected error: " + err.message);
-      } else {
-        alert("Unexpected unknown error");
-      }
+    } catch (err) {
+      alert("Failed to update order status");
     } finally {
       setLoading(false);
     }
@@ -155,59 +62,32 @@ export default function AddProductModal({ isOpen, onClose, onSuccess }: Props) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="p-6 sm:p-8">
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">Add Product</h2>
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+          Update Order Status
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <Input name="name" placeholder="Product Name" value={form.name} onChange={handleChange} required />
-          <Input name="description" placeholder="Description" value={form.description} onChange={handleChange} required />
-
           <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">Supplier</label>
+            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">
+              Status
+            </label>
             <select
-              name="supplier_id"
-              value={form.supplier_id}
+              name="status"
+              value={status}
               onChange={handleChange}
               required
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white"
             >
-              <option value="">Select Supplier</option>
-              {suppliers.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
+              <option value="">Select Status</option>
+              {statusOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
                 </option>
               ))}
             </select>
           </div>
-
-          <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">Category</label>
-            <select
-              name="category_id"
-              value={form.category_id}
-              onChange={handleChange}
-              required
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white"
-            >
-              <option value="">Select Category</option>
-              {categories.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <Input name="price" type="number" step="0.01" placeholder="Price" value={form.price} onChange={handleChange} required />
-          <Input name="stock" type="number" placeholder="Stock" value={form.stock} onChange={handleChange} required />
-          <Input name="unit" placeholder="Unit" value={form.unit} onChange={handleChange} required />
-
-          <div>
-            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">Image</label>
-            <FileInput type="file" accept="image/*" onChange={handleFileChange} required />
-          </div>
-
           <div className="pt-2 text-right">
-            <Button type="submit" disabled={loading}>
-              {loading ? "Saving..." : "Add Product"}
+            <Button type="submit" disabled={loading || !status}>
+              {loading ? "Updating..." : "Update Status"}
             </Button>
           </div>
         </form>

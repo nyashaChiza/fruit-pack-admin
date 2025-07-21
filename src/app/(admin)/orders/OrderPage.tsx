@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import RecentOrders from "@/components/orders/OrdersTable";
 import AssignOrderDriverModal from "@/components/orders/AssignOrderDriverModal";
-import UpdateOrderStatusModal from "@/components/orders/UpdateOrderStatusModal";
+import {UpdateOrderStatusModal} from "@/components/orders/UpdateOrderStatusModal";
 type Order = {
   id: string | number;
   customer_name: string;
@@ -37,35 +37,35 @@ export default function OrderPage() {
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-6">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold text-gray-800 dark:text-white/90">
-          Orders
-        </h1>
+      <h1 className="text-xl font-bold text-gray-800 dark:text-white/90">
+        Orders
+      </h1>
       </div>
 
       <RecentOrders
-        orders={orders}
-        onAssignDriver={(orderId) => {
-          setSelectedOrderId(orderId);
-          setShowAssignDriverModal(true);
-        }}
-        onUpdateStatus={(orderId) => {
-          setSelectedOrderId(orderId);
-          setShowUpdateStatusModal(true);
-        }}
+      orders={orders}
+      onAssignDriver={(orderId) => {
+        setSelectedOrderId(orderId);
+        setShowAssignDriverModal(true);
+      }}
+      onUpdateStatus={(orderId) => {
+        setSelectedOrderId(orderId);
+        setShowUpdateStatusModal(true);
+      }}
       />
 
       <AssignOrderDriverModal
-        orderId={selectedOrderId!}
-        isOpen={showAssignDriverModal}
-        onClose={() => setShowAssignDriverModal(false)}
-        onSuccess={fetchOrders} 
+      orderId={selectedOrderId!}
+      isOpen={showAssignDriverModal}
+      onClose={() => setShowAssignDriverModal(false)}
+      onSuccess={fetchOrders} 
       />
 
       <UpdateOrderStatusModal
-        orderId={selectedOrderId!}
-        isOpen={showUpdateStatusModal}
-        onClose={() => setShowUpdateStatusModal(false)}
-        onSuccess={fetchOrders}
+      orderId={selectedOrderId!}
+      isOpen={showUpdateStatusModal}
+      onClose={() => setShowUpdateStatusModal(false)}
+      onSuccess={fetchOrders}
       />
     </div>
   );
