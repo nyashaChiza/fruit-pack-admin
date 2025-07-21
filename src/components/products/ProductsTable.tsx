@@ -1,7 +1,7 @@
 "use client";
 
 type Product = {
-  id: number | string;
+  id: number ;
   name: string;
   unit: string;
   price: number;

@@ -6,10 +6,38 @@ import { EcommerceMetrics } from "@/components/ecommerce/EcommerceMetrics";
 import RecentOrders from "@/components/ecommerce/RecentOrders";
 import { api } from "@/lib/api";
 
-type User = unknown;     // Replace 'unknown' with your actual User type/interface
-type Product = unknown;  // Replace 'unknown' with your actual Product type/interface
-type Order = unknown;    // Replace 'unknown' with your actual Order type/interface
-type Driver = unknown;   // Replace 'unknown' with your actual Driver type/interface
+
+type Product = {
+  id: number ;
+  name: string;
+  unit: string;
+  price: number;
+  stock: number;
+};
+
+type Order = {
+  id: string | number;
+  customer_name: string;
+  delivery_status: string;
+  payment_status: string;
+  payment_method: string;
+  total: string | number;
+};
+type Driver = {
+  id: number | string;
+  vehicle_number: string;
+  user_id: string;
+  status: number;
+  longitude: number;
+  latitude: number;
+};
+type User = {
+  id: number | string;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+};
 
 const fetchUsers = (): Promise<User[]> => api.get("/users");
 const fetchProducts = (): Promise<Product[]> => api.get("/products");
