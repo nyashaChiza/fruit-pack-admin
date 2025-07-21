@@ -6,7 +6,7 @@ import { fetchCurrentUser } from "@/lib/api";
 
 type User = {
   id: string;
-  name: string;
+  full_name: string;
   email: string;
   avatarUrl?: string; // Optional if your backend supports it
 };
@@ -28,7 +28,7 @@ export default function UserDropdown() {
     async function loadUser() {
       try {
         const userData = await fetchCurrentUser();
-        setUser(userData);
+        setUser(userData as User);
       } catch (err) {
         console.error("Failed to load user:", err);
       }
@@ -47,7 +47,7 @@ export default function UserDropdown() {
       >
 
 
-        <span className="block mr-1 font-medium text-theme-sm">{user.name}</span>
+        <span className="block mr-1 font-medium text-theme-sm">{user.full_name}</span>
 
         <svg
           className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
