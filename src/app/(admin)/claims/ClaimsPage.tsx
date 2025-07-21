@@ -4,9 +4,13 @@ import React, { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import ClaimsTable from "@/components/claims/ClaimsTable";
 import ClaimStatusModal from "@/components/claims/SetClaimStatusClaimModal";
-
+type Claim = {
+  id: string;
+  name: string;
+  // Add other driver fields as needed
+};
 export default function ClaimsPage() {
-  const [claims, setClaims] = useState([]);
+  const [claims, setClaims] = useState<Claim[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [selectedClaimId, setSelectedClaimId] = useState<string | null>(null);
@@ -15,7 +19,7 @@ export default function ClaimsPage() {
   const fetchClaims = () => {
     setLoading(true);
     api
-      .get("/claims/admin/claims")
+      .get<Claim[]>("/claims/admin/claims")
       .then(setClaims)
       .catch((err) => console.error("Fetch error", err))
       .finally(() => setLoading(false));

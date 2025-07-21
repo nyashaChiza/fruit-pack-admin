@@ -5,8 +5,14 @@ import { api } from "@/lib/api";
 import DriversTable from "@/components/drivers/DriversTable";
 import AddDriverModal from "@/components/drivers/AddDriverModal";
 
+type Driver = {
+  id: string;
+  name: string;
+  // Add other driver fields as needed
+};
+
 export default function ProductsPage() {
-  const [drivers, setDrivers] = useState([]);
+  const [drivers, setDrivers] = useState<Driver[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   
@@ -14,7 +20,7 @@ export default function ProductsPage() {
   const fetchDrivers = () => {
     setLoading(true);
     api
-      .get("/drivers")
+      .get<Driver[]>("/drivers")
       .then(setDrivers)
       .catch((err) => console.error("Fetch error", err))
       .finally(() => setLoading(false));

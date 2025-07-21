@@ -5,8 +5,7 @@ import {
   ArrowDownIcon,
   ArrowUpIcon,
   BoxIconLine,
-  GroupIcon,
-  TruckIcon,
+  GroupIcon
 } from "@/icons";
 
 type Props = {

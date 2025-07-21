@@ -5,8 +5,14 @@ import { api } from "@/lib/api";
 import CategoryTable from "@/components/categories/CategoriesTable";
 import AddCategoryModal from "@/components/categories/AddCategoryModal";
 
+
+type Category = {
+  id: string;
+  name: string;
+  // Add other driver fields as needed
+};
 export default function CategoryPage() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   
@@ -14,7 +20,7 @@ export default function CategoryPage() {
   const fetchCategories = () => {
     setLoading(true);
     api
-      .get("/categories")
+      .get<Category[]>("/categories")
       .then(setCategories)
       .catch((err) => console.error("Fetch error", err))
       .finally(() => setLoading(false));
