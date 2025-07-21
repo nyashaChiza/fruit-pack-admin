@@ -7,10 +7,11 @@ import AddCategoryModal from "@/components/categories/AddCategoryModal";
 
 
 type Category = {
-  id: string;
+  id: number | string;
   name: string;
-  // Add other driver fields as needed
+  icon: string;
 };
+
 export default function CategoryPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);

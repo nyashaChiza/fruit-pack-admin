@@ -6,9 +6,12 @@ import DriversTable from "@/components/drivers/DriversTable";
 import AddDriverModal from "@/components/drivers/AddDriverModal";
 
 type Driver = {
-  id: string;
-  name: string;
-  // Add other driver fields as needed
+  id: number | string;
+  vehicle_number: string;
+  user_id: string;
+  status: number;
+  longitude: number;
+  latitude: number;
 };
 
 export default function ProductsPage() {
