@@ -61,7 +61,7 @@ export default function SignInForm() {
               Sign In
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Enter your email and password to sign in!
+              Enter your username and password to sign in!
             </p>
           </div>
           <form onSubmit={handleSignIn}>
@@ -69,7 +69,7 @@ export default function SignInForm() {
               <div>
                 <Label>Username <span className="text-error-500">*</span></Label>
                 <Input
-                  placeholder="username"
+                  placeholder="Enter your username"
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
