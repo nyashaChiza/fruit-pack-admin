@@ -11,10 +11,9 @@ type Product = {
 type Props = {
   products: Product[];
   onEdit?: (product: Product) => void;
-  onDelete?: (id: string | number) => void;
 };
 
-export default function ProductsTable({ products, onEdit, onDelete }: Props) {
+export default function ProductsTable({ products, onEdit }: Props) {
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-white/[0.03]">
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -54,12 +53,7 @@ export default function ProductsTable({ products, onEdit, onDelete }: Props) {
                   >
                     Edit
                   </button>
-                  <button
-                    onClick={() => onDelete?.(product.id)}
-                    className="text-xs text-red-600 hover:underline dark:text-red-400"
-                  >
-                    Delete
-                  </button>
+                  
                 </div>
               </td>
             </tr>
