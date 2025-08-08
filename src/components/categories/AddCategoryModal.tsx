@@ -78,14 +78,12 @@ export default function AddCategoryModal({ isOpen, onClose, onSuccess }: Props) 
             placeholder="e.g. Fresh Fruits"
             onChange={handleChange}
             required
-            label="Category Name"
           />
           <Input
             name="icon"
             value={form.icon}
             placeholder="e.g. 🍓"
             onChange={handleChange}
-            label="Icon (optional)"
           />
 
           <div className="flex justify-center space-x-4 pt-4">
