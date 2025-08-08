@@ -38,7 +38,7 @@ export default function EditCategoryModal({
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const res = await api.get<Category[]>(`/categories/${categoryId}`);
+        const res = await api.get<Category>(`/categories/${categoryId}`);
         setForm({ name:res.name, icon:res.icon });
       } catch (err) {
         console.error("Failed to fetch category", err);
