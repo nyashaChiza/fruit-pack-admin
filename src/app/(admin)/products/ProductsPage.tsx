@@ -5,7 +5,7 @@ import { api } from "@/lib/api";
 import ProductsTable from "@/components/products/ProductsTable";
 import AddProductModal from "@/components/products/AddProductModal";
 import EditProductModal from "@/components/products/EditProduct";
-import DeleteProductModal from "@/components/products/deleteProductModal";
+import DeleteProductModal from "@/components/products/DeleteProductModal";
 
 type Product = {
   id: number;
