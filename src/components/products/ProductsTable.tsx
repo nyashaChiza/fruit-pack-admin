@@ -10,10 +10,10 @@ type Product = {
 
 type Props = {
   products: Product[];
-  onEdit?: (product: Product) => void;
+  onProductEdit: (productId: number) => void;
 };
 
-export default function ProductsTable({ products, onEdit }: Props) {
+export default function ProductsTable({ products, onProductEdit }: Props) {
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-white/[0.03]">
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -48,7 +48,7 @@ export default function ProductsTable({ products, onEdit }: Props) {
               <td className="px-6 py-4 text-sm text-right">
                 <div className="flex justify-end gap-2">
                   <button
-                    onClick={() => onEdit?.(product)}
+                    onClick={() => onProductEdit(Number(product.id))}
                     className="text-xs text-blue-600 hover:underline dark:text-blue-400"
                   >
                     Edit

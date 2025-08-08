@@ -5,34 +5,26 @@ import { api } from "@/lib/api";
 import Input from "@/components/form/input/InputField";
 import Button from "@/components/ui/button/Button";
 import { Modal } from "@/components/ui/modal/index";
-import FileInput from "../form/input/FileInput";
+
+type Supplier = { id: number; name: string };
+type Category = { id: number; name: string };
 
 type Product = {
     id: number;
     name: string;
+    description: string;
     unit: string;
-    description: String;
-    category: Category;
-    supplier: Supplier;
     price: number;
     stock: number;
+    supplier_id: number;
+    category_id: number;
 };
 
 type Props = {
     isOpen: boolean;
     onClose: () => void;
     onSuccess: () => void;
-    product?: Product | null;
-};
-
-type Supplier = {
-    id: string | number;
-    name: string;
-};
-
-type Category = {
-    id: string | number;
-    name: string;
+    productId: number;
 };
 
 type ValidationDetail = {
@@ -53,21 +45,20 @@ function isApiValidationError(err: unknown): err is {
                 ? (err as { response: { data: { detail: unknown } } }).response.data.detail
                 : []
         )
-
     );
 }
 
-export default function EditProductModal({ isOpen, onClose, onSuccess, product }: Props) {
+export default function EditProductModal({ isOpen, onClose, onSuccess, productId }: Props) {
     const [form, setForm] = useState({
         name: "",
         description: "",
-        supplier_id: "",
-        category_id: "",
+        supplier_id: 0,
+        category_id: 0,
         price: 1,
         stock: 0,
         unit: "",
     });
-    const [image, setImage] = useState<File | null>(null);
+
     const [loading, setLoading] = useState(false);
     const [suppliers, setSuppliers] = useState<Supplier[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
@@ -75,42 +66,22 @@ export default function EditProductModal({ isOpen, onClose, onSuccess, product }
     useEffect(() => {
         if (!isOpen) return;
 
-        api.get<Supplier[]>("/suppliers")
-            .then(setSuppliers)
-            .catch((err: unknown) => {
-                if (err instanceof Error) {
-                    console.error("Failed to fetch suppliers:", err.message);
-                } else {
-                    console.error("Unknown error while fetching suppliers");
-                }
-            });
-
-        api.get<Category[]>("/categories")
-            .then(setCategories)
-            .catch((err: unknown) => {
-                if (err instanceof Error) {
-                    console.error("Failed to fetch categories:", err.message);
-                } else {
-                    console.error("Unknown error while fetching categories");
-                }
-            });
-
-    }, [isOpen]);
-    useEffect(() => {
-        if (product) {
-            setForm({
-                name: product.name,
-                description: "", // If you don't have description, leave it empty
-                supplier_id: String(product.supplier.id),
-                category_id: String(product.category.id),
-                price: product.price,
-                stock: product.stock,
-                unit: product.unit,
-            });
-            setImage(null);
-        }
-    }, [product]);
-
+        Promise.all([
+            api.get<Supplier[]>("/suppliers").then(setSuppliers),
+            api.get<Category[]>("/categories").then(setCategories),
+            api.get<Product>(`/products/${productId}`).then((prod) => {
+                setForm({
+                    name: prod.name,
+                    description: prod.description,
+                    supplier_id: prod.supplier_id,
+                    category_id: prod.supplier_id,
+                    price: prod.price,
+                    stock: prod.stock,
+                    unit: prod.unit,
+                });
+            }),
+        ]).catch((err) => console.error("Failed to fetch data:", err));
+    }, [isOpen, productId]);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -118,60 +89,27 @@ export default function EditProductModal({ isOpen, onClose, onSuccess, product }
         const { name, value, type } = e.target;
         setForm((prev) => ({
             ...prev,
-            [name]:
-                type === "number"
-                    ? value === ""
-                        ? ""
-                        : Number(value)
-                    : value,
+            [name]: type === "number" ? Number(value) : value,
         }));
-    };
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setImage(e.target.files[0]);
-        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
-        const formData = new FormData();
-        formData.append("name", form.name);
-        formData.append("description", form.description);
-        formData.append("supplier_id", String(form.supplier_id));
-        formData.append("price", String(form.price));
-        formData.append("stock", String(form.stock));
-        formData.append("unit", form.unit);
-        if (form.category_id.trim()) {
-            formData.append("category_id", form.category_id);
-        }
-
-        if (image) {
-            formData.append("image", image);
-        }
-
         try {
-            const method = product ? "put" : "post";
-            const url = product ? `/products/${product.id}` : "/products";
+            await api.put(`/products/${productId}`, {
+                ...form,
+                supplier_id: Number(form.supplier_id),
+                category_id: Number(form.category_id),
+                price: Number(form.price),
+                stock: Number(form.stock),
+            });
 
-            const response = await api[method](url, formData);
-            console.log(`✅ Product ${product ? "updated" : "created"}:`, response);
             onSuccess();
             onClose();
-            setForm({
-                name: "",
-                description: "",
-                supplier_id: "",
-                category_id: "",
-                price: 1,
-                stock: 0,
-                unit: "",
-            });
-            setImage(null);
         } catch (err: unknown) {
-            console.error(`❌ Failed to ${product ? "update" : "add"} product:`, err);
+            console.error(`❌ Failed to update product:`, err);
             if (isApiValidationError(err)) {
                 const details = err.response.data.detail;
                 const formatted = details.map((d) => `${d.loc?.join(".")}: ${d.msg}`).join("\n");
@@ -186,23 +124,22 @@ export default function EditProductModal({ isOpen, onClose, onSuccess, product }
         }
     };
 
-
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <div className="p-6 sm:p-8">
-                <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">Add Product</h2>
+                <h2 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">Update Product</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <Input name="name" placeholder="Product Name" value={form.name} onChange={handleChange} required />
                     <Input name="description" placeholder="Description" value={form.description} onChange={handleChange} required />
 
                     <div>
-                        <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">Supplier</label>
+                        <label className="block mb-1 text-sm font-medium">Supplier</label>
                         <select
                             name="supplier_id"
                             value={form.supplier_id}
                             onChange={handleChange}
                             required
-                            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                            className="w-full rounded-lg border px-4 py-2 text-sm"
                         >
                             <option value="">Select Supplier</option>
                             {suppliers.map((s) => (
@@ -214,13 +151,13 @@ export default function EditProductModal({ isOpen, onClose, onSuccess, product }
                     </div>
 
                     <div>
-                        <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">Category</label>
+                        <label className="block mb-1 text-sm font-medium">Category</label>
                         <select
                             name="category_id"
                             value={form.category_id}
                             onChange={handleChange}
                             required
-                            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm shadow-sm dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+                            className="w-full rounded-lg border px-4 py-2 text-sm"
                         >
                             <option value="">Select Category</option>
                             {categories.map((c) => (
@@ -234,11 +171,6 @@ export default function EditProductModal({ isOpen, onClose, onSuccess, product }
                     <Input name="price" type="number" step={0.01} placeholder="Price" value={form.price} onChange={handleChange} required />
                     <Input name="stock" type="number" placeholder="Stock" value={form.stock} onChange={handleChange} required />
                     <Input name="unit" placeholder="Unit" value={form.unit} onChange={handleChange} required />
-
-                    <div>
-                        <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-white/80">Image</label>
-                        <FileInput type="file" accept="image/*" onChange={handleFileChange} required />
-                    </div>
 
                     <div className="pt-2 text-right">
                         <Button type="submit" disabled={loading}>

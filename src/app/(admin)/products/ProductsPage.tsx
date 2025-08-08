@@ -48,7 +48,11 @@ export default function ProductsPage() {
         </button>
       </div>
 
-      <ProductsTable products={products} />
+      <ProductsTable products={products} 
+        onProductEdit={(ProductId) => {
+        setSelectedProductId(ProductId);
+        setShowEditModal(true);
+      }}/>
 
       <AddProductModal
         isOpen={showModal}
