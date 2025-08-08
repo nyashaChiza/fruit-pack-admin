@@ -5,6 +5,7 @@ import { api } from "@/lib/api";
 import ProductsTable from "@/components/products/ProductsTable";
 import AddProductModal from "@/components/products/AddProductModal";
 import EditProductModal from "@/components/products/EditProduct";
+import DeleteProductModal from "@/components/products/deleteProductModal";
 
 type Product = {
   id: number;
@@ -17,6 +18,7 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
 
@@ -48,11 +50,16 @@ export default function ProductsPage() {
         </button>
       </div>
 
-      <ProductsTable products={products} 
+      <ProductsTable products={products}
         onProductEdit={(ProductId) => {
-        setSelectedProductId(ProductId);
-        setShowEditModal(true);
-      }}/>
+          setSelectedProductId(ProductId);
+          setShowEditModal(true);
+        }}
+        onProductDelete={(ProductId) => {
+          setSelectedProductId(ProductId);
+          setShowDeleteModal(true);
+        }}
+      />
 
       <AddProductModal
         isOpen={showModal}
@@ -70,6 +77,21 @@ export default function ProductsPage() {
           onSuccess={() => {
             fetchProducts();
             setShowEditModal(false);
+            setSelectedProductId(null);
+          }}
+        />
+      )}
+      {selectedProductId !== null && (
+        <DeleteProductModal
+          productId={selectedProductId}
+          isOpen={showDeleteModal}
+          onClose={() => {
+            setShowDeleteModal(false);
+            setSelectedProductId(null);
+          }}
+          onSuccess={() => {
+            fetchProducts();
+            setShowDeleteModal(false);
             setSelectedProductId(null);
           }}
         />

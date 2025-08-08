@@ -52,6 +52,18 @@ export const api = {
   get: <T = unknown>(url: string, requireAuth = true) =>
     apiFetch<T>(url, { method: "GET" }, requireAuth),
 
+  post: <T = unknown, TBody = unknown>(url: string, body: TBody, requireAuth = true) => {
+    const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
+    return apiFetch<T>(
+      url,
+      {
+        method: "POST",
+        body: isFormData ? body : JSON.stringify(body),
+      },
+      requireAuth
+    );
+  },
+
   put: <T = unknown, TBody = unknown>(url: string, body: TBody, requireAuth = true) => {
     const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
     return apiFetch<T>(
@@ -64,17 +76,20 @@ export const api = {
     );
   },
 
-  post: <T = unknown, TBody = unknown>(url: string, body: TBody, requireAuth = true) => {
+  patch: <T = unknown, TBody = unknown>(url: string, body: TBody, requireAuth = true) => {
     const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
     return apiFetch<T>(
       url,
       {
-        method: "POST",
+        method: "PATCH",
         body: isFormData ? body : JSON.stringify(body),
       },
       requireAuth
     );
   },
+
+  delete: <T = unknown>(url: string, requireAuth = true) =>
+    apiFetch<T>(url, { method: "DELETE" }, requireAuth),
 };
 // 🔐 Auth Helpers
 export function getUserIdFromToken(token: string): string | null {

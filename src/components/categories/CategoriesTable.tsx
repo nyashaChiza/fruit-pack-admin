@@ -8,8 +8,8 @@ type Category = {
 
 type Props = {
   categories: Category[];
-  onEdit?: (category: Category) => void;
-  onDelete?: (id: string | number) => void;
+  onEdit?: (id: number) => void;
+  onDelete?: (id: number) => void;
 };
 
 export default function CategoryTable({ categories, onEdit, onDelete }: Props) {
@@ -42,13 +42,13 @@ export default function CategoryTable({ categories, onEdit, onDelete }: Props) {
                 <td className="px-6 py-4 text-sm text-right">
                   <div className="flex justify-end gap-2">
                     <button
-                      onClick={() => onEdit?.(category)}
+                      onClick={() => onEdit?.(Number(category.id))}
                       className="text-xs text-blue-600 hover:underline dark:text-blue-400"
                     >
                       Edit
                     </button>
                     <button
-                      onClick={() => onDelete?.(category.id)}
+                      onClick={() => onDelete?.(Number(category.id))}
                       className="text-xs text-red-600 hover:underline dark:text-red-400"
                     >
                       Delete

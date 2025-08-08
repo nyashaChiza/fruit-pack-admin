@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import CategoryTable from "@/components/categories/CategoriesTable";
 import AddCategoryModal from "@/components/categories/AddCategoryModal";
-
+import EditCategoryModal from "@/components/categories/EditCategoryModal";
+import DeleteCategoryModal from "@/components/categories/DeleteCategoryModal";
 
 type Category = {
   id: number | string;
@@ -16,7 +17,10 @@ export default function CategoryPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
 
   const fetchCategories = () => {
     setLoading(true);
@@ -45,13 +49,52 @@ export default function CategoryPage() {
         </button>
       </div>
 
-      <CategoryTable categories={categories} />
+      <CategoryTable categories={categories}
+       onEdit={(CategoryId) => {
+          setSelectedCategoryId(CategoryId);
+          setShowEditModal(true);
+        }}
+        onDelete={(categoryId) => {
+          setSelectedCategoryId(categoryId);
+          setShowDeleteModal(true);
+        }} />
 
-    <AddCategoryModal
-    isOpen={showModal}
-    onClose={() => setShowModal(false)}
-    onSuccess={fetchCategories}
-    />
+      <AddCategoryModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSuccess={fetchCategories}
+      />
+      {selectedCategoryId !== null && (
+        <EditCategoryModal
+          categoryId={selectedCategoryId}
+          isOpen={showEditModal}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedCategoryId(null);
+          }}
+          onSuccess={() => {
+            fetchCategories();
+            setShowEditModal(false);
+            setSelectedCategoryId(null);
+          }}
+        />
+      )}
+      {selectedCategoryId !== null && (
+              <DeleteCategoryModal
+                categoryId={selectedCategoryId}
+                isOpen={showDeleteModal}
+                onClose={() => {
+                  setShowDeleteModal(false);
+                  setSelectedCategoryId(null);
+                }}
+                onSuccess={() => {
+                  fetchCategories();
+                  setShowDeleteModal(false);
+                  setSelectedCategoryId(null);
+                }}
+              />
+            )}
+
 
     </div>
   );
