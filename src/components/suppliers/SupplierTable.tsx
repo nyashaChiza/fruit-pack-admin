@@ -11,8 +11,8 @@ type Supplier = {
 
 type Props = {
   suppliers: Supplier[];
-  onEdit: (id: number | string) => void;
-  onDelete?: (id: number | string) => void;
+  onEdit: (SupplierId: number) => void;
+  onDelete: (SupplierId: number) => void;
 };
 
 export default function SupplierTable({ suppliers, onEdit, onDelete }: Props) {
