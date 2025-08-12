@@ -25,7 +25,7 @@ export default function DriversTable({ drivers, onEdit, onDelete }: Props) {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
                 Name
             </th>
-          <tr>
+          
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
                 Vehicle Number
             </th>
