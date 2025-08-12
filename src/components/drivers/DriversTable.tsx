@@ -23,20 +23,19 @@ export default function DriversTable({ drivers, onEdit, onDelete }: Props) {
         <thead className="bg-gray-50 dark:bg-gray-800">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
-                Name
-            </th>
-          
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
-                Vehicle Number
+              Name
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
-                User ID
+              Vehicle Number
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
+              User ID
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
               Status
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
-              Loaction
+              Location
             </th>
             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400">
               Actions
@@ -64,13 +63,13 @@ export default function DriversTable({ drivers, onEdit, onDelete }: Props) {
               <td className="px-6 py-4 text-sm text-right">
                 <div className="flex justify-end gap-2">
                   <button
-                    onClick={() => onEdit?.(Number(driver.id))}
+                    onClick={() => onEdit(Number(driver.id))}
                     className="text-xs text-blue-600 hover:underline dark:text-blue-400"
                   >
                     Edit
                   </button>
                   <button
-                    onClick={() => onDelete?.(Number(driver.id))}
+                    onClick={() => onDelete(Number(driver.id))}
                     className="text-xs text-red-600 hover:underline dark:text-red-400"
                   >
                     Delete
