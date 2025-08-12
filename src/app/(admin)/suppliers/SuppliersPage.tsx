@@ -54,6 +54,10 @@ export default function SupplierPage() {
           setSelectedSupplierId(SupplierId);
           setShowEditModal(true);
         }}
+        onDelete={(SupplierId) => {
+          setSelectedSupplierId(SupplierId);
+          setShowDeleteModal(true);
+        }}
       />
       {selectedSupplierId !== null && (
         <EditSupplierModal

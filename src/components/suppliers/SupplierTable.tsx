@@ -43,14 +43,14 @@ export default function SupplierTable({ suppliers, onEdit, onDelete }: Props) {
               <td className="px-4 py-2">{supplier.phone_number}</td>
               <td className="px-4 py-2 text-right space-x-2">
                 <button
-                  onClick={() => onEdit(supplier.id)}
+                  onClick={() => onEdit(Number(supplier.id))}
                   className="text-blue-600 hover:underline"
                 >
                   Edit
                 </button>
                 {onDelete && (
                   <button
-                    onClick={() => onDelete(supplier.id)}
+                    onClick={() => onDelete(Number(supplier.id))}
                     className="text-red-600 hover:underline"
                   >
                     Delete
