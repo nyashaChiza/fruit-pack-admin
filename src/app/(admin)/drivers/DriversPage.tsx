@@ -9,6 +9,7 @@ import DeleteDriverModal from "@/components/drivers/DeleteDrivermodal";
 
 type Driver = {
   id: number | string;
+  driver_name: string;
   vehicle_number: string;
   user_id: string;
   status: number;
