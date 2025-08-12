@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import DriversTable from "@/components/drivers/DriversTable";
 import AddDriverModal from "@/components/drivers/AddDriverModal";
+import EditDriverModal from "@/components/drivers/DriverEditModal";
+import DeleteDriverModal from "@/components/drivers/DeleteDrivermodal";
 
 type Driver = {
   id: number | string;
@@ -18,7 +20,10 @@ export default function ProductsPage() {
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedDriverId, setSelectedDriverId] = useState<number | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+
 
   const fetchDrivers = () => {
     setLoading(true);
@@ -47,13 +52,51 @@ export default function ProductsPage() {
         </button>
       </div>
 
-      <DriversTable drivers={drivers} />
+      <DriversTable drivers={drivers}
+        onEdit={(DriverId) => {
+          setSelectedDriverId(DriverId);
+          setShowEditModal(true);
+        }}
+        onDelete={(DriverId) => {
+          setSelectedDriverId(DriverId);
+          setShowDeleteModal(true);
+        }} />
 
-    <AddDriverModal
-    isOpen={showModal}
-    onClose={() => setShowModal(false)}
-    onSuccess={fetchDrivers}
-    />
+      <AddDriverModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSuccess={fetchDrivers}
+      />
+      {selectedDriverId !== null && (
+        <EditDriverModal
+          DriverId={selectedDriverId}
+          isOpen={showEditModal}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedDriverId(null);
+          }}
+          onSuccess={() => {
+            fetchDrivers();
+            setShowEditModal(false);
+            setSelectedDriverId(null);
+          }}
+        />
+      )}
+      {selectedDriverId !== null && (
+        <DeleteDriverModal
+          DriverId={selectedDriverId}
+          isOpen={showDeleteModal}
+          onClose={() => {
+            setShowDeleteModal(false);
+            setSelectedDriverId(null);
+          }}
+          onSuccess={() => {
+            fetchDrivers();
+            setShowDeleteModal(false);
+            setSelectedDriverId(null);
+          }}
+        />
+      )}
 
     </div>
   );

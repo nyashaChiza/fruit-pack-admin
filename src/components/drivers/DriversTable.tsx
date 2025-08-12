@@ -2,6 +2,7 @@
 
 type Driver = {
   id: number | string;
+  driver_name: string;
   vehicle_number: string;
   user_id: string;
   status: number;
@@ -11,8 +12,8 @@ type Driver = {
 
 type Props = {
   drivers: Driver[];
-  onEdit?: (driver: Driver) => void;
-  onDelete?: (id: string | number) => void;
+  onEdit: (DriverId: number) => void;
+  onDelete: (DriverId: number) => void;
 };
 
 export default function DriversTable({ drivers, onEdit, onDelete }: Props) {
@@ -20,6 +21,10 @@ export default function DriversTable({ drivers, onEdit, onDelete }: Props) {
     <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-white/[0.03]">
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
         <thead className="bg-gray-50 dark:bg-gray-800">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
+                Name
+            </th>
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
                 Vehicle Number
@@ -42,6 +47,9 @@ export default function DriversTable({ drivers, onEdit, onDelete }: Props) {
           {drivers.map((driver) => (
             <tr key={driver.id}>
               <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
+                {driver.driver_name}
+              </td>
+              <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
                 {driver.vehicle_number}
               </td>
               <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
@@ -56,13 +64,13 @@ export default function DriversTable({ drivers, onEdit, onDelete }: Props) {
               <td className="px-6 py-4 text-sm text-right">
                 <div className="flex justify-end gap-2">
                   <button
-                    onClick={() => onEdit?.(driver)}
+                    onClick={() => onEdit?.(Number(driver.id))}
                     className="text-xs text-blue-600 hover:underline dark:text-blue-400"
                   >
                     Edit
                   </button>
                   <button
-                    onClick={() => onDelete?.(driver.id)}
+                    onClick={() => onDelete?.(Number(driver.id))}
                     className="text-xs text-red-600 hover:underline dark:text-red-400"
                   >
                     Delete
