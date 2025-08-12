@@ -1,6 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { api } from "@/lib/api";
+import SupplierTable from "@/components/suppliers/SupplierTable";
+import AddSupplierModal from "@/components/suppliers/AddSupplier";
+import EditSupplierModal from "@/components/suppliers/EditSupplierModal";
+import DeleteSupplierModal from "@/components/suppliers/DeleteSupplierModal";
 
 type Supplier = {
   id: number | string;
@@ -8,59 +13,85 @@ type Supplier = {
   contact_email: string;
   phone_number: string;
 };
+export default function SupplierPage() {
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedSupplierId, setSelectedSupplierId] = useState<number | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-type Props = {
-  suppliers: Supplier[];
-  onEdit: (id: number | string) => void;
-  onDelete?: (id: number | string) => void;
-};
 
-export default function SupplierTable({ suppliers, onEdit, onDelete }: Props) {
+  const fetchSuppliers = () => {
+    setLoading(true);
+    api
+      .get<Supplier[]>("/suppliers")
+      .then(setSuppliers)
+      .catch((err) => console.error("Fetch error", err))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(fetchSuppliers, []);
+
+  if (loading) return <p className="p-6 text-gray-500">Loading Suppliers...</p>;
+
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-white/[0.03]">
-      <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead className="bg-gray-50 dark:bg-gray-800">
-          <tr>
-            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
-              Name
-            </th>
-            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
-              Email
-            </th>
-            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
-              Phone
-            </th>
-            <th className="px-4 py-2 text-right text-sm font-medium text-gray-500">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {suppliers.map((supplier) => (
-            <tr key={supplier.id} className="border-b border-gray-200">
-              <td className="px-4 py-2">{supplier.name}</td>
-              <td className="px-4 py-2">{supplier.contact_email}</td>
-              <td className="px-4 py-2">{supplier.phone_number}</td>
-              <td className="px-4 py-2 text-right space-x-2">
-                <button
-                  onClick={() => onEdit(supplier.id)}
-                  className="text-blue-600 hover:underline"
-                >
-                  Edit
-                </button>
-                {onDelete && (
-                  <button
-                    onClick={() => onDelete(supplier.id)}
-                    className="text-red-600 hover:underline"
-                  >
-                    Delete
-                  </button>
-                )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="px-4 sm:px-6 lg:px-8 py-6">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-xl font-bold text-gray-800 dark:text-white/90">
+          Suppliers
+        </h1>
+        <button
+          onClick={() => setShowModal(true)}
+          className="inline-flex items-center gap-2 rounded-lg border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-700"
+        >
+          + Add Supplier
+        </button>
+      </div>
+
+      <SupplierTable suppliers={suppliers}
+        onEdit={(SupplierId) => {
+          setSelectedSupplierId(SupplierId);
+          setShowEditModal(true);
+        }}
+      />
+      {selectedSupplierId !== null && (
+        <EditSupplierModal
+          SupplierId={selectedSupplierId}
+          isOpen={showEditModal}
+          onClose={() => {
+            setShowEditModal(false);
+            setSelectedSupplierId(null);
+          }}
+          onSuccess={() => {
+            fetchSuppliers();
+            setShowEditModal(false);
+            setSelectedSupplierId(null);
+          }}
+        />
+      )}
+      {selectedSupplierId !== null && (
+        <DeleteSupplierModal
+          SupplierId={selectedSupplierId}
+          isOpen={showDeleteModal}
+          onClose={() => {
+            setShowDeleteModal(false);
+            setSelectedSupplierId(null);
+          }}
+          onSuccess={() => {
+            fetchSuppliers();
+            setShowDeleteModal(false);
+            setSelectedSupplierId(null);
+          }}
+        />
+      )}
+
+      <AddSupplierModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSuccess={fetchSuppliers}
+      />
+
     </div>
   );
 }
