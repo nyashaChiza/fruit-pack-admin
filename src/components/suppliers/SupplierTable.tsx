@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 type Supplier = {
   id: number | string;
   name: string;
@@ -9,8 +11,8 @@ type Supplier = {
 
 type Props = {
   suppliers: Supplier[];
-  onEdit?: (supplier: Supplier) => void;
-  onDelete?: (id: string | number) => void;
+  onEdit: (id: number | string) => void;
+  onDelete?: (id: number | string) => void;
 };
 
 export default function SupplierTable({ suppliers, onEdit, onDelete }: Props) {
@@ -19,50 +21,44 @@ export default function SupplierTable({ suppliers, onEdit, onDelete }: Props) {
       <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
         <thead className="bg-gray-50 dark:bg-gray-800">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Name</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Email</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Phone</th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400">Actions</th>
+            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
+              Name
+            </th>
+            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
+              Email
+            </th>
+            <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">
+              Phone
+            </th>
+            <th className="px-4 py-2 text-right text-sm font-medium text-gray-500">
+              Actions
+            </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-100 dark:divide-gray-800 dark:bg-transparent">
-          {suppliers.length === 0 ? (
-            <tr>
-              <td colSpan={3} className="px-6 py-4 text-center text-sm text-gray-500">
-                No suppliers available.
+        <tbody>
+          {suppliers.map((supplier) => (
+            <tr key={supplier.id} className="border-b border-gray-200">
+              <td className="px-4 py-2">{supplier.name}</td>
+              <td className="px-4 py-2">{supplier.contact_email}</td>
+              <td className="px-4 py-2">{supplier.phone_number}</td>
+              <td className="px-4 py-2 text-right space-x-2">
+                <button
+                  onClick={() => onEdit(supplier.id)}
+                  className="text-blue-600 hover:underline"
+                >
+                  Edit
+                </button>
+                {onDelete && (
+                  <button
+                    onClick={() => onDelete(supplier.id)}
+                    className="text-red-600 hover:underline"
+                  >
+                    Delete
+                  </button>
+                )}
               </td>
             </tr>
-          ) : (
-            suppliers.map((supplier) => (
-              <tr key={supplier.id}>
-                <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
-                  {supplier.name}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
-                  {supplier.contact_email}
-                </td>
-                <td className="px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
-                  {supplier.phone_number}
-                </td>
-                <td className="px-6 py-4 text-sm text-right">
-                  <div className="flex justify-end gap-2">
-                    <button
-                      onClick={() => onEdit?.(Number(supplier.id)))}
-                      className="text-xs text-blue-600 hover:underline dark:text-blue-400"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => onDelete?.(supplier.id)}
-                      className="text-xs text-red-600 hover:underline dark:text-red-400"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))
-          )}
+          ))}
         </tbody>
       </table>
     </div>
