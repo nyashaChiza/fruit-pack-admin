@@ -47,7 +47,7 @@ export default function SupplierTable({ suppliers, onEdit, onDelete }: Props) {
                 <td className="px-6 py-4 text-sm text-right">
                   <div className="flex justify-end gap-2">
                     <button
-                      onClick={() => onEdit?.(supplier)}
+                      onClick={() => onEdit?.(Number(supplier.id)))}
                       className="text-xs text-blue-600 hover:underline dark:text-blue-400"
                     >
                       Edit
