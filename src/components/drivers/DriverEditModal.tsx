@@ -8,7 +8,6 @@ import { Modal } from "@/components/ui/modal/index";
 
 
 
-
 type Driver = {
     id: number | string;
     vehicle_number: string;
@@ -48,9 +47,10 @@ function isApiValidationError(err: unknown): err is {
 
 export default function EditDriverModal({ isOpen, onClose, onSuccess, DriverId }: Props) {
     const [form, setForm] = useState({
-        name: "",
-        contact_email: "",
-        phone_number: "",
+        vehicle_number: "",
+        status: "",
+        longitude: "",
+        latitude: ""
     });
 
     const [loading, setLoading] = useState(false);
