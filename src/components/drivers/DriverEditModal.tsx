@@ -49,8 +49,8 @@ export default function EditDriverModal({ isOpen, onClose, onSuccess, DriverId }
     const [form, setForm] = useState({
         vehicle_number: "",
         status: "",
-        longitude: "",
-        latitude: ""
+        longitude:0,
+        latitude: 0
     });
 
     const [loading, setLoading] = useState(false);
