@@ -116,7 +116,6 @@ export default function AddUserModal({ isOpen, onClose, onSuccess }: Props) {
                     <Input name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
                     <Input name="username" placeholder="Username" value={form.username} onChange={handleChange} required />
                     <Input name="full_name" placeholder="Full Name" value={form.full_name} onChange={handleChange} required />
-                    
                     <Input name="password" placeholder="Password" type="password" value={form.password} onChange={handleChange} required />
 
                     <div className="pt-2 text-right">
