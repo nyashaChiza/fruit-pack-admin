@@ -67,7 +67,7 @@ export default function AddUserModal({ isOpen, onClose, onSuccess }: Props) {
                 username: form.username,
                 full_name: form.full_name,
                 is_active: true,
-                role: form.role,
+                role: "admin",
                 password: form.password,
             };
 
@@ -116,20 +116,7 @@ export default function AddUserModal({ isOpen, onClose, onSuccess }: Props) {
                     <Input name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
                     <Input name="username" placeholder="Username" value={form.username} onChange={handleChange} required />
                     <Input name="full_name" placeholder="Full Name" value={form.full_name} onChange={handleChange} required />
-                    <select
-                        name="role"
-                        value={form.role}
-                        onChange={handleChange}
-                        required
-                        className="block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-green-500 focus:ring-green-500"
-                    >
-                        <option value="" disabled>
-                            Select Role
-                        </option>
-                        <option value="admin">Admin</option>
-                        <option value="supplier">Supplier</option>
-
-                    </select>
+                    
                     <Input name="password" placeholder="Password" type="password" value={form.password} onChange={handleChange} required />
 
                     <div className="pt-2 text-right">
