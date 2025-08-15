@@ -20,8 +20,9 @@ export default function ClaimsTable({ claims, onSetStatus }: Props) {
         <table className="min-w-full table-auto">
           <thead className="border-y border-gray-100 dark:border-gray-800">
             <tr>
-              <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Driver ID</th>
+              <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Driver Name</th>
               <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Order ID</th>
+              <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Type</th>
               <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Status</th>
               <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Created</th>
               <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Actions</th>
@@ -31,10 +32,11 @@ export default function ClaimsTable({ claims, onSetStatus }: Props) {
             {claims && claims.length > 0 ? (
               claims.map((claim) => (
                 <tr key={claim.id}>
-                  <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{claim.id}</td>
-                  <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{claim.driver_id}</td>
+                  <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{claim.driver_name}</td>
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{claim.order_id}</td>
+                  <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{claim.claim_type}</td>
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{claim.status}</td>
+                  <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{claim.created}</td>
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300 space-x-2">
                     <button
                       onClick={() => onSetStatus(claim.id)}
