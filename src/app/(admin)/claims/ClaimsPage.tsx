@@ -4,12 +4,17 @@ import React, { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import ClaimsTable from "@/components/claims/ClaimsTable";
 import ClaimStatusModal from "@/components/claims/SetClaimStatusClaimModal";
+
 type Claim = {
-  id:  number;
+  id: number;
   driver_id: number;
   order_id: number;
+  driver_name:string;
+  claim_type:string;
   status: string;
+  created: Date;
 };
+
 export default function ClaimsPage() {
   const [claims, setClaims] = useState<Claim[]>([]);
   const [loading, setLoading] = useState(true);
