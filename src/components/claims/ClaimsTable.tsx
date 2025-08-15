@@ -5,7 +5,10 @@ type Claim = {
   id: number;
   driver_id: number;
   order_id: number;
+  driver_name:string;
+  claim_type:string;
   status: string;
+  created: Date;
 };
 
 type Props = {
@@ -36,7 +39,7 @@ export default function ClaimsTable({ claims, onSetStatus }: Props) {
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{claim.order_id}</td>
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{claim.claim_type}</td>
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{claim.status}</td>
-                  <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{claim.created}</td>
+                  <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300">{new Date(claim.created).toLocaleDateString('en-GB')}</td>
                   <td className="py-3 px-4 text-sm text-gray-700 dark:text-gray-300 space-x-2">
                     <button
                       onClick={() => onSetStatus(claim.id)}
