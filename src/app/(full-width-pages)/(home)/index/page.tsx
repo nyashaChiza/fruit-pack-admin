@@ -38,15 +38,17 @@ export default function Home() {
           </div>
           <div className="lg:w-1/2 relative w-full h-80 lg:h-96">
             <div className="absolute inset-0 bg-green-600 rounded-3xl transform rotate-3"></div>
-            <div className="relative z-10 rounded-3xl overflow-hidden shadow-xl">
+            <div className="relative z-10 rounded-3xl overflow-hidden shadow-xl h-80 lg:h-96">
               <Image
-                src="https://images.pexels.com/photos/1300975/pexels-photo-1300975.jpeg?auto=compress&cs=tinysrgb&w=600"
+                src="/images/hero/hero.jpeg"
                 alt="Fresh fruits and vegetables"
                 fill
                 className="object-cover"
+                priority
               />
             </div>
           </div>
+
         </div>
       </section>
 
@@ -134,8 +136,8 @@ export default function Home() {
           <div>
             <h6 className="font-semibold mb-2 text-white">Contact</h6>
             <ul className="space-y-1">
-              <li>support@fruitpack.com</li>
-              <li>+27 12 345 6789</li>
+              <li>support@fruit-pack.com</li>
+              <li>+27 69 733 1709</li>
               <li>Cape Town, South Africa</li>
             </ul>
           </div>

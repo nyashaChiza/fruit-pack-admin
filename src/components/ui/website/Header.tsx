@@ -6,33 +6,35 @@ export default function Header() {
       <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
 
         {/* Logo */}
-        <Link href="/">
-          <a className="flex items-center text-xl font-bold">
-            <div
-              className="w-8 h-8 rounded-full flex items-center justify-center mr-2"
-              style={{ background: 'linear-gradient(45deg, #22c55e, #16a34a)' }}
-            >
-              <span className="text-white font-bold">F</span>
-            </div>
-            FruitPack
-          </a>
+        <Link
+          href="/"
+          className="flex items-center text-xl font-bold"
+        >
+          <div
+            className="w-8 h-8 rounded-full flex items-center justify-center mr-2"
+            style={{ background: 'linear-gradient(45deg, #22c55e, #16a34a)' }}
+          >
+            <span className="text-white font-bold">F</span>
+          </div>
+          FruitPack
         </Link>
 
         {/* Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          <Link href="#about">
-            <a className="hover:text-green-600 transition">About</a>
+          <Link href="#about" className="hover:text-green-600 transition">
+            About
           </Link>
-          <Link href="/signin">
-            <a className="hover:text-green-600 transition">Dashboard</a>
+          <Link href="/signin" className="hover:text-green-600 transition">
+            Dashboard
           </Link>
-          <Link href="#contact">
-            <a className="hover:text-green-600 transition">Contact</a>
+          <Link href="#contact" className="hover:text-green-600 transition">
+            Contact
           </Link>
-          <Link href="#download">
-            <a className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
-              Download App
-            </a>
+          <Link
+            href="#download"
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+          >
+            Download App
           </Link>
         </nav>
 

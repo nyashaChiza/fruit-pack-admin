@@ -208,16 +208,25 @@ export default function RefundCancellationPolicy() {
           <div>
             <h6 className="font-semibold mb-2 text-white">Company</h6>
             <ul className="space-y-1">
-              <li><Link href="/" className="hover:text-white">Home</Link></li>
+              <li><Link href="#about" className="hover:text-white">About Us</Link></li>
+              <li><Link href="#how-it-works" className="hover:text-white">How It Works</Link></li>
+              <li><Link href="#contact" className="hover:text-white">Contact</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h6 className="font-semibold mb-2 text-white">Legal</h6>
+            <ul className="space-y-1">
               <li><Link href="/policy" className="hover:text-white">Privacy Policy</Link></li>
               <li><Link href="/terms" className="hover:text-white">Terms & Conditions</Link></li>
+              <li><Link href="/returnPolicy" className="hover:text-white">Refund Policy</Link></li>
             </ul>
           </div>
           <div>
             <h6 className="font-semibold mb-2 text-white">Contact</h6>
             <ul className="space-y-1">
-              <li>support@fruitpack.co.za</li>
-              <li>+27 12 345 6789</li>
+              <li>support@fruit-pack.com</li>
+              <li>+27 69 733 1709</li>
+              <li>Cape Town, South Africa</li>
             </ul>
           </div>
         </div>
