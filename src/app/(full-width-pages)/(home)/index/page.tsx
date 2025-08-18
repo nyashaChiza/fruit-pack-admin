@@ -25,7 +25,7 @@ export default function Home() {
                                 <a className="nav-link" href="#about">About</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#how-it-works">How It Works</a>
+                                <a className="nav-link" href="/signin">Dashboard</a>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="#contact">Contact</a>
@@ -33,6 +33,7 @@ export default function Home() {
                             <li className="nav-item">
                                 <a className="btn bg-green-600 text-white ms-2" href="#download">Download App</a>
                             </li>
+
                         </ul>
                     </div>
                 </div>
@@ -53,7 +54,7 @@ export default function Home() {
                                     <span className="text-green-600">delivered to your door</span>
                                 </h1>
                                 <p className="text-lg text-muted mb-4">
-                                    Skip the grocery store queue. Get farm-fresh produce delivered straight to your home with FruitPack's mobile app.
+                                    Skip the grocery store queue. Get farm-fresh produce delivered straight to your home with FruitPack&apos;s mobile app.
                                 </p>
                             </div>
 
