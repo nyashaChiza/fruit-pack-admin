@@ -55,7 +55,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold mb-6">About FruitPack</h2>
           <p className="text-gray-700 max-w-3xl mx-auto">
-            FruitPack is South Africa's premier mobile app for fresh fruit and vegetable delivery. We connect you directly with local farmers to bring the freshest produce to your doorstep.
+            FruitPack is South Africa&apos;s premier mobile app for fresh fruit and vegetable delivery. We connect you directly with local farmers to bring the freshest produce to your doorstep.
           </p>
         </div>
       </section>
