@@ -164,7 +164,7 @@ export default function Terms() {
             <h6 className="font-semibold mb-2 text-white">Company</h6>
             <ul className="space-y-1">
               <li><Link href="/" className="hover:text-white">Home</Link></li>
-              <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
+              <li><Link href="/policy" className="hover:text-white">Privacy Policy</Link></li>
               <li><Link href="/terms" className="hover:text-white">Terms & Conditions</Link></li>
             </ul>
           </div>

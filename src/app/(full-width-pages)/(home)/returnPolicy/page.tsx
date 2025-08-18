@@ -1,278 +1,230 @@
-// pages/refund-cancellation.js
+// src/app/refund-cancellation/page.tsx
+import Link from "next/link";
+import Header from "@/components/ui/website/Header";
 
 export default function RefundCancellationPolicy() {
-    return (
-        <div>
-            {/* Header */}
-            <nav className="bg-white border-b sticky-top">
-                <div className="container mx-auto flex justify-between items-center py-4">
-                    <a className="flex items-center text-lg font-bold" href="index.html">
-                        <div className="rounded-full flex items-center justify-center mr-2" 
-                             style={{ width: '2rem', height: '2rem', background: 'linear-gradient(45deg, #22c55e, #16a34a)' }}>
-                            <span className="text-white font-bold">F</span>
-                        </div>
-                        FruitPack
-                    </a>
-                    <a href="index.html" className="border border-gray-300 text-gray-700 rounded px-4 py-2 hover:bg-gray-100">
-                        Back to Home
-                    </a>
-                </div>
-            </nav>
+  const policySections = [
+    {
+      title: "1. Refund Eligibility",
+      content: (
+        <>
+          <h4 className="font-semibold mb-2">Eligible for Refund</h4>
+          <ul className="list-disc list-inside text-gray-700 mb-4">
+            <li>Damaged items beyond normal handling</li>
+            <li>Missing items from your order</li>
+            <li>Spoiled produce upon delivery</li>
+            <li>Wrong items delivered</li>
+            <li>Produce that doesn’t meet freshness standards</li>
+          </ul>
+          <h4 className="font-semibold mb-2">Not Eligible for Refund</h4>
+          <ul className="list-disc list-inside text-gray-700">
+            <li>Natural variations in size, shape, or color</li>
+            <li>Minor cosmetic imperfections</li>
+            <li>Change of mind after delivery</li>
+            <li>Items spoiled after proper storage by customer</li>
+            <li>Delivery delays due to customer unavailability</li>
+            <li>Personal preference or taste issues</li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      title: "2. Time Limits for Claims",
+      content: (
+        <>
+          <div className="bg-orange-100 border border-orange-500 p-4 mb-4 rounded">
+            <strong>Critical:</strong> Report issues within <span className="font-semibold">24 hours</span> of delivery. Late claims will not be eligible.
+          </div>
+          <h4 className="font-semibold mb-2">Reporting Process</h4>
+          <ul className="list-disc list-inside text-gray-700">
+            <li>Contact customer support immediately</li>
+            <li>Provide photos of damaged/spoiled items if possible</li>
+            <li>Include order number and delivery details</li>
+            <li>Describe the problem clearly</li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      title: "3. Order Cancellation Policy",
+      content: (
+        <>
+          <h4 className="font-semibold mb-2">Before Order Processing</h4>
+          <ul className="list-disc list-inside text-gray-700 mb-4">
+            <li>Orders can be cancelled free of charge</li>
+            <li>Processing begins 1–2 hours after order placement</li>
+            <li>Request cancellations via app or support</li>
+            <li>Full refund issued to original payment method</li>
+          </ul>
+          <h4 className="font-semibold mb-2">After Order Processing</h4>
+          <ul className="list-disc list-inside text-gray-700">
+            <li>Cannot cancel once produce is packed</li>
+            <li>Orders in transit cannot be cancelled</li>
+            <li>Rescheduling options if delivery cannot be completed</li>
+            <li>Emergency cancellations handled case-by-case</li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      title: "4. Refund Process",
+      content: (
+        <>
+          <h4 className="font-semibold mb-2">How to Request a Refund</h4>
+          <ol className="list-decimal list-inside text-gray-700 mb-4">
+            <li>Contact support within 24 hours of delivery</li>
+            <li>Provide order number and issue description</li>
+            <li>Submit photos if requested</li>
+            <li>Support team reviews claim within 24 hours</li>
+            <li>Refund processed to original payment method if approved</li>
+          </ol>
+          <h4 className="font-semibold mb-2">Refund Timelines</h4>
+          <ul className="list-disc list-inside text-gray-700">
+            <li>Claim review: 24–48 hours</li>
+            <li>Refund processing: 5–7 business days</li>
+            <li>Credit card refunds: 5–10 business days</li>
+            <li>Bank transfer refunds: 3–5 business days</li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      title: "5. Quality Guarantee Program",
+      content: (
+        <>
+          <h4 className="font-semibold mb-2">Our Commitment</h4>
+          <p className="text-gray-700 mb-2">
+            FruitPack guarantees the freshness and quality of all produce delivered. Items are hand-selected and properly stored to ensure the best products.
+          </p>
+          <h4 className="font-semibold mb-2">Quality Standards</h4>
+          <ul className="list-disc list-inside text-gray-700">
+            <li>Produce checked for freshness before delivery</li>
+            <li>Stored at appropriate temperatures</li>
+            <li>Damaged/spoiled items removed before packing</li>
+            <li>Storage and handling tips provided in app</li>
+          </ul>
+        </>
+      ),
+    },
+    {
+      title: "6. Contact Us for Refunds",
+      content: (
+        <>
+          <p className="text-gray-700 mb-4">Contact us immediately to request a refund or report quality issues:</p>
+          <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <div className="flex items-start gap-3">
+              <span className="text-green-600 text-2xl">📧</span>
+              <div>
+                <p className="font-semibold mb-0">Email Support</p>
+                <p className="text-gray-700 mb-0">support@fruitpack.co.za</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="text-green-600 text-2xl">📞</span>
+              <div>
+                <p className="font-semibold mb-0">Phone Support</p>
+                <p className="text-gray-700 mb-0">+27 12 345 6789</p>
+              </div>
+            </div>
+          </div>
+          <div className="bg-green-100 border border-green-600 p-4 rounded">
+            <strong>Tip:</strong> Have your order number ready and contact support within 24 hours for fastest processing.
+          </div>
+        </>
+      ),
+    },
+  ];
 
-            {/* Refund Policy Content */}
-            <main className="container mx-auto py-10">
-                <div className="row justify-content-center">
-                    <div className="col-lg-10">
-                        {/* Header Section */}
-                        <div className="text-center mb-5">
-                            <div className="feature-icon mx-auto mb-4" style={{ backgroundColor: '#fed7aa' }}>
-                                <i className="bi bi-arrow-clockwise text-orange-500" style={{ fontSize: '2rem' }}></i>
-                            </div>
-                            <h1 className="text-4xl font-bold text-dark mb-4">Refund & Cancellation Policy</h1>
-                            <p className="text-lg text-muted">
-                                Our policy for refunds, cancellations, and quality guarantees for FruitPack orders.
-                            </p>
-                            <p className="text-muted">
-                                <small>Last updated: January 2024</small>
-                            </p>
-                        </div>
+  return (
+    <div className="font-sans text-gray-800">
 
-                        {/* Key Points Cards */}
-                        <div className="row g-4 mb-5">
-                            <div className="col-md-3">
-                                <div className="bg-white shadow-sm border-0 h-100 text-center">
-                                    <div className="card-body p-4">
-                                        <i className="bi bi-clock text-orange-500 mb-3" style={{ fontSize: '2rem' }}></i>
-                                        <h6 className="card-title">24-Hour Window</h6>
-                                        <p className="card-text text-muted small">
-                                            Report issues within 24 hours of delivery for refund eligibility.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div className="col-md-3">
-                                <div className="bg-white shadow-sm border-0 h-100 text-center">
-                                    <div className="card-body p-4">
-                                        <i className="bi bi-exclamation-circle text-orange-500 mb-3" style={{ fontSize: '2rem' }}></i>
-                                        <h6 className="card-title">Quality Issues Only</h6>
-                                        <p className="card-text text-muted small">
-                                            Refunds apply to damaged, missing, or spoiled items only.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div className="col-md-3">
-                                <div className="bg-white shadow-sm border-0 h-100 text-center">
-                                    <div className="card-body p-4">
-                                        <i className="bi bi-check-circle text-orange-500 mb-3" style={{ fontSize: '2rem' }}></i>
-                                        <h6 className="card-title">Quality Guarantee</h6>
-                                        <p className="card-text text-muted small">
-                                            We guarantee fresh, quality produce or provide replacements.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div className="col-md-3">
-                                <div className="bg-white shadow-sm border-0 h-100 text-center">
-                                    <div className="card-body p-4">
-                                        <i className="bi bi-arrow-clockwise text-orange-500 mb-3" style={{ fontSize: '2rem' }}></i>
-                                        <h6 className="card-title">Fast Processing</h6>
-                                        <p className="card-text text-muted small">
-                                            Approved refunds processed within 5-7 business days.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      {/* Header */}
+      <Header />
 
-                        {/* Detailed Policy */}
-                        <div className="policy-content">
-                            <div className="bg-white shadow-sm mb-4">
-                                <div className="card-header">
-                                    <h2 className="h4 mb-0">1. Refund Eligibility</h2>
-                                </div>
-                                <div className="card-body">
-                                    <h4>Eligible for Refund</h4>
-                                    <ul className="text-muted">
-                                        <li><strong>Damaged items:</strong> Produce that arrives significantly damaged or bruised beyond normal handling</li>
-                                        <li><strong>Missing items:</strong> Items that were ordered and paid for but not delivered</li>
-                                        <li><strong>Spoiled produce:</strong> Items that are clearly spoiled or past their prime upon delivery</li>
-                                        <li><strong>Wrong items:</strong> Items that differ significantly from what was ordered</li>
-                                        <li><strong>Quality issues:</strong> Produce that doesn&apos;t meet our published freshness standards</li>
-                                    </ul>
-                                    
-                                    <h4>NOT Eligible for Refund</h4>
-                                    <ul className="text-muted">
-                                        <li>Natural variations in size, shape, or color of produce</li>
-                                        <li>Minor cosmetic imperfections that don&apos;t affect quality</li>
-                                        <li>Change of mind after delivery is completed</li>
-                                        <li>Items that spoil after proper delivery due to customer storage</li>
-                                        <li>Delivery delays due to customer unavailability</li>
-                                        <li>Personal preference or taste-related issues</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="bg-white shadow-sm mb-4">
-                                <div className="card-header">
-                                    <h2 className="h4 mb-0">2. Time Limits for Claims</h2>
-                                </div>
-                                <div className="card-body">
-                                    <div className="bg-orange-light border border-orange-500 p-3 mb-4">
-                                        <h5 className="alert-heading">Critical Timing Requirement</h5>
-                                        <p className="mb-0">
-                                            You must report any issues with your order within <strong>24 hours</strong> of delivery. 
-                                            Claims submitted after this period will not be eligible for refund.
-                                        </p>
-                                    </div>
-                                    
-                                    <h4>Reporting Process</h4>
-                                    <ul className="text-muted">
-                                        <li>Contact customer support immediately upon discovering issues</li>
-                                        <li>Provide photos of damaged or spoiled items when possible</li>
-                                        <li>Include your order number and delivery details</li>
-                                        <li>Describe the specific problem clearly</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="bg-white shadow-sm mb-4">
-                                <div className="card-header">
-                                    <h2 className="h4 mb-0">3. Order Cancellation Policy</h2>
-                                </div>
-                                <div className="card-body">
-                                    <h4>Before Order Processing</h4>
-                                    <ul className="text-muted">
-                                        <li>Orders can be cancelled free of charge if not yet processed</li>
-                                        <li>Processing typically begins within 1-2 hours of order placement</li>
-                                        <li>Cancellations must be requested through the app or customer support</li>
-                                        <li>Full refund will be issued to the original payment method</li>
-                                    </ul>
-                                    
-                                    <h4>After Order Processing</h4>
-                                    <ul className="text-muted">
-                                        <li>Once produce is selected and packed, cancellation is not possible</li>
-                                        <li>Orders in transit cannot be cancelled</li>
-                                        <li>If delivery cannot be completed, rescheduling options are available</li>
-                                        <li>Emergency cancellations may be considered on a case-by-case basis</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="bg-white shadow-sm mb-4">
-                                <div className="card-header">
-                                    <h2 className="h4 mb-0">4. Refund Process</h2>
-                                </div>
-                                <div className="card-body">
-                                    <h4>How to Request a Refund</h4>
-                                    <ol className="text-muted">
-                                        <li>Contact our customer support team within 24 hours of delivery</li>
-                                        <li>Provide your order number and describe the issue</li>
-                                        <li>Submit photos if requested for damaged or spoiled items</li>
-                                        <li>Our team will review your claim within 24 hours</li>
-                                        <li>If approved, refund will be processed to your original payment method</li>
-                                    </ol>
-                                    
-                                    <h4>Refund Timelines</h4>
-                                    <ul className="text-muted">
-                                        <li>Claim review: 24-48 hours</li>
-                                        <li>Refund processing: 5-7 business days</li>
-                                        <li>Credit card refunds: 5-10 business days</li>
-                                        <li>Bank transfer refunds: 3-5 business days</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="bg-white shadow-sm mb-4">
-                                <div className="card-header">
-                                    <h2 className="h4 mb-0">5. Quality Guarantee Program</h2>
-                                </div>
-                                <div className="card-body">
-                                    <h4>Our Commitment</h4>
-                                    <p className="text-muted">
-                                        FruitPack guarantees the freshness and quality of all produce delivered. We hand-select items 
-                                        and maintain proper cold chain storage to ensure you receive the best possible products.
-                                    </p>
-                                    
-                                    <h4>Quality Standards</h4>
-                                    <ul className="text-muted">
-                                        <li>All produce is checked for freshness before delivery</li>
-                                        <li>Items are stored at appropriate temperatures</li>
-                                        <li>Damaged or spoiled items are removed before packing</li>
-                                        <li>We provide storage and handling tips in the app</li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                            <div className="bg-white shadow-sm">
-                                <div className="card-header">
-                                    <h2 className="h4 mb-0">6. Contact Us for Refunds</h2>
-                                </div>
-                                <div className="card-body">
-                                    <p className="text-muted">
-                                        To request a refund or report quality issues, contact us immediately:
-                                    </p>
-                                    <div className="row mb-4">
-                                        <div className="col-md-6">
-                                            <div className="d-flex align-items-center mb-2">
-                                                <i className="bi bi-envelope text-green-600 me-2"></i>
-                                                <div>
-                                                    <p className="font-bold mb-0">Email Support</p>
-                                                    <p className="text-muted mb-0">support@fruitpack.co.za</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="d-flex align-items-center mb-2">
-                                                <i className="bi bi-telephone text-green-600 me-2"></i>
-                                                <div>
-                                                    <p className="font-bold mb-0">Phone Support</p>
-                                                    <p className="text-muted mb-0">+27 12 345 6789</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="bg-green-100 border border-green-600 p-3">
-                                        <strong>Remember:</strong> For fastest processing, have your order number ready and contact us 
-                                        within 24 hours of delivery.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-
-            {/* Footer */}
-            <footer className="bg-gray-800 text-white py-4">
-                <div className="container mx-auto">
-                    <div className="flex flex-col md:flex-row justify-between items-center">
-                        <div className="flex items-center mb-3 mb-md-0">
-                            <div className="rounded-full flex items-center justify-center mr-2" 
-                                 style={{ width: '1.5rem', height: '1.5rem', background: 'linear-gradient(45deg, #22c55e, #16a34a)' }}>
-                                <span className="text-white font-bold small">F</span>
-                            </div>
-                            <span className="h6 mb-0">FruitPack</span>
-                        </div>
-                        
-                        <div className="flex gap-4 text-sm">
-                            <a href="privacy-policy.html" className="text-gray-400 hover:text-white">Privacy Policy</a>
-                            <a href="terms.html" className="text-gray-400 hover:text-white">Terms & Conditions</a>
-                            <a href="refund-policy.html" className="text-gray-400 hover:text-white">Refund Policy</a>
-                        </div>
-                    </div>
-                    
-                    <hr className="my-3 border-gray-600" />
-                    
-                    <div className="text-center text-gray-400 text-sm">
-                        <p className="mb-0">&copy; 2025 FruitPack. All rights reserved.</p>
-                    </div>
-                </div>
-            </footer>
+      {/* Hero Section */}
+      <section className="bg-orange-50 py-20 text-center">
+        <div className="max-w-3xl mx-auto px-6">
+          <div className="mx-auto mb-6 w-20 h-20 flex items-center justify-center rounded-full bg-orange-100 text-orange-500 text-3xl">
+            🔄
+          </div>
+          <h1 className="text-4xl font-bold mb-4">Refund & Cancellation Policy</h1>
+          <p className="text-gray-700 mb-2">
+            Our policy for refunds, cancellations, and quality guarantees for FruitPack orders.
+          </p>
+          <p className="text-gray-500 text-sm">Last updated: January 2024</p>
+          <Link
+            href="/"
+            className="inline-block mt-4 px-6 py-3 border border-orange-600 text-orange-600 font-semibold rounded-lg hover:bg-orange-100 transition"
+          >
+            Back to Home
+          </Link>
         </div>
-    );
+      </section>
+
+      {/* Key Feature Cards */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {[
+            { icon: "⏰", title: "24-Hour Window", text: "Report issues within 24 hours of delivery for refund eligibility." },
+            { icon: "⚠️", title: "Quality Issues Only", text: "Refunds apply to damaged, missing, or spoiled items only." },
+            { icon: "✅", title: "Quality Guarantee", text: "We guarantee fresh, quality produce or provide replacements." },
+            { icon: "⚡", title: "Fast Processing", text: "Approved refunds processed within 5–7 business days." },
+          ].map((card, i) => (
+            <div key={i} className="bg-white shadow-lg rounded-xl p-6 hover:shadow-2xl transition">
+              <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-orange-100 text-orange-500 text-3xl">
+                {card.icon}
+              </div>
+              <h3 className="font-bold text-xl mb-2">{card.title}</h3>
+              <p className="text-gray-700 text-sm">{card.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Detailed Policy Sections */}
+      <section className="py-16 bg-orange-50">
+        <div className="max-w-4xl mx-auto px-6 space-y-8">
+          {policySections.map((section, i) => (
+            <div key={i} className="bg-white shadow-lg rounded-xl overflow-hidden">
+              <div className="bg-orange-100 px-6 py-3 border-b font-semibold">{section.title}</div>
+              <div className="px-6 py-4">{section.content}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 text-gray-400 py-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div className="flex items-center mb-4">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center mr-2 bg-gradient-to-br from-green-500 to-green-700 text-white font-bold">
+                F
+              </div>
+              <span className="font-bold text-white">FruitPack</span>
+            </div>
+            <p>Fresh fruits and vegetables delivered to your door across South Africa.</p>
+          </div>
+          <div>
+            <h6 className="font-semibold mb-2 text-white">Company</h6>
+            <ul className="space-y-1">
+              <li><Link href="/" className="hover:text-white">Home</Link></li>
+              <li><Link href="/policy" className="hover:text-white">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-white">Terms & Conditions</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h6 className="font-semibold mb-2 text-white">Contact</h6>
+            <ul className="space-y-1">
+              <li>support@fruitpack.co.za</li>
+              <li>+27 12 345 6789</li>
+            </ul>
+          </div>
+        </div>
+        <div className="text-center text-gray-400 mt-8 text-sm">
+          &copy; 2025 FruitPack. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  );
 }
