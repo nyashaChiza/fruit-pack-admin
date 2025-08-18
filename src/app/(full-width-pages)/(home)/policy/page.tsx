@@ -42,7 +42,7 @@ export default function PrivacyPolicy() {
                         <i className="bi bi-lock-fill text-green-600 mb-3" style={{ fontSize: '2rem' }}></i>
                         <h5 className="font-semibold">POPIA Compliant</h5>
                         <p className="text-gray-600">
-                            We comply with South Africa's Protection of Personal Information Act (POPIA).
+                            We comply with South Africa&apos;s Protection of Personal Information Act (POPIA).
                         </p>
                     </div>
                     <div className="bg-white shadow-md rounded-lg text-center p-4">
@@ -56,7 +56,7 @@ export default function PrivacyPolicy() {
                         <i className="bi bi-eye-fill text-green-600 mb-3" style={{ fontSize: '2rem' }}></i>
                         <h5 className="font-semibold">Transparent</h5>
                         <p className="text-gray-600">
-                            We're transparent about what data we collect and how we use it.
+                            We&apos;re transparent about what data we collect and how we use it.
                         </p>
                     </div>
                 </div>
@@ -129,7 +129,7 @@ export default function PrivacyPolicy() {
                         </div>
                         <div className="p-4">
                             <p className="text-gray-600">
-                                FruitPack is committed to complying with South Africa's Protection of Personal Information Act (POPIA). 
+                                FruitPack is committed to complying with South Africa&apos;s Protection of Personal Information Act (POPIA). 
                                 We ensure that your personal information is:
                             </p>
                             <ul className="list-disc list-inside text-gray-600">

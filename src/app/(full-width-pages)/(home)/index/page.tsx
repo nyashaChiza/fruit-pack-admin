@@ -1,4 +1,5 @@
 // pages/index.js
+import Image from "next/image";
 
 export default function Home() {
     return (
@@ -7,17 +8,17 @@ export default function Home() {
             <nav className="bg-white sticky-top border-b">
                 <div className="container mx-auto flex justify-between items-center py-4">
                     <a className="flex items-center text-lg font-bold" href="index.html">
-                        <div className="rounded-full flex items-center justify-center mr-2" 
-                             style={{ width: '2rem', height: '2rem', background: 'linear-gradient(45deg, #22c55e, #16a34a)' }}>
+                        <div className="rounded-full flex items-center justify-center mr-2"
+                            style={{ width: '2rem', height: '2rem', background: 'linear-gradient(45deg, #22c55e, #16a34a)' }}>
                             <span className="text-white font-bold">F</span>
                         </div>
                         FruitPack
                     </a>
-                    
+
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                         <span className="navbar-toggler-icon"></span>
                     </button>
-                    
+
                     <div className="collapse navbar-collapse" id="navbarNav">
                         <ul className="navbar-nav ms-auto">
                             <li className="nav-item">
@@ -48,14 +49,14 @@ export default function Home() {
                                     Now Available in South Africa
                                 </span>
                                 <h1 className="text-4xl font-bold text-dark mb-4">
-                                    Fresh fruits and veggies 
+                                    Fresh fruits and veggies
                                     <span className="text-green-600">delivered to your door</span>
                                 </h1>
                                 <p className="text-lg text-muted mb-4">
                                     Skip the grocery store queue. Get farm-fresh produce delivered straight to your home with FruitPack's mobile app.
                                 </p>
                             </div>
-                            
+
                             <div className="flex flex-column flex-sm-row gap-3 mb-4">
                                 <a href="#download" className="bg-green-600 text-white btn-lg px-4">
                                     <i className="bi bi-phone me-2"></i>
@@ -65,7 +66,7 @@ export default function Home() {
                                     Learn More
                                 </a>
                             </div>
-                            
+
                             <div className="flex flex-wrap gap-4 text-muted small">
                                 <div className="flex items-center">
                                     <i className="bi bi-check-circle-fill text-green-600 me-2"></i>
@@ -81,13 +82,18 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="col-lg-6 mt-5 mt-lg-0">
                             <div className="relative">
                                 <div className="absolute inset-0 bg-green-600 rounded-3xl transform rotate-6"></div>
                                 <div className="bg-white rounded-3xl p-8 shadow-lg">
-                                    <img src="https://images.pexels.com/photos/1300975/pexels-photo-1300975.jpeg?auto=compress&cs=tinysrgb&w=600" 
-                                         alt="Fresh fruits and vegetables" className="w-full h-80 object-cover rounded-lg" />
+                                    <Image
+                                        src="https://images.pexels.com/photos/1300975/pexels-photo-1300975.jpeg?auto=compress&cs=tinysrgb&w=600"
+                                        alt="Fresh fruits and vegetables"
+                                        width={600}           // width in pixels (required)
+                                        height={320}          // height in pixels (required)
+                                        className="w-full h-80 object-cover rounded-lg"
+                                    />
                                     <div className="absolute top-[-1rem] right-[-1rem] w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-white">
                                         <i className="bi bi-star-fill"></i>
                                     </div>
@@ -105,13 +111,13 @@ export default function Home() {
                         <div className="col-lg-8 text-center mb-5">
                             <h2 className="text-5xl font-bold text-dark mb-4">About FruitPack</h2>
                             <p className="text-lg text-muted">
-                                FruitPack is South Africa's premier mobile app for fresh fruit and vegetable delivery. 
-                                We connect you directly with local farmers and suppliers to bring the freshest produce 
+                                FruitPack is South Africa&apos;s premier mobile app for fresh fruit and vegetable delivery.
+                                We connect you directly with local farmers and suppliers to bring the freshest produce
                                 to your doorstep, saving you time while supporting local agriculture.
                             </p>
                         </div>
                     </div>
-                    
+
                     <div className="row g-4">
                         <div className="col-md-4">
                             <div className="bg-white border-0 shadow-sm">
@@ -126,7 +132,7 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="col-md-4">
                             <div className="bg-white border-0 shadow-sm">
                                 <div className="card-body text-center p-4">
@@ -140,7 +146,7 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="col-md-4">
                             <div className="bg-white border-0 shadow-sm">
                                 <div className="card-body text-center p-4">
@@ -167,33 +173,33 @@ export default function Home() {
                             <p className="text-lg text-muted">Get fresh produce delivered in three simple steps</p>
                         </div>
                     </div>
-                    
+
                     <div className="row">
                         <div className="col-md-4 text-center mb-4">
                             <div className="step-number bg-green-600 text-white rounded-full mx-auto mb-3" style={{ width: '4rem', height: '4rem' }}>1</div>
                             <h5 className="font-bold text-dark mb-3">Browse & Order</h5>
                             <p className="text-muted mb-4">
-                                Download the FruitPack app and browse our selection of fresh fruits and vegetables. 
+                                Download the FruitPack app and browse our selection of fresh fruits and vegetables.
                                 Add your favorites to the cart and customize your order.
                             </p>
                             <i className="bi bi-cart3 text-green-600" style={{ fontSize: '3rem', opacity: 0.3 }}></i>
                         </div>
-                        
+
                         <div className="col-md-4 text-center mb-4">
                             <div className="step-number bg-green-600 text-white rounded-full mx-auto mb-3" style={{ width: '4rem', height: '4rem' }}>2</div>
                             <h5 className="font-bold text-dark mb-3">Secure Checkout with Paystack</h5>
                             <p className="text-muted mb-4">
-                                Complete your purchase using our secure payment system powered by Paystack. 
+                                Complete your purchase using our secure payment system powered by Paystack.
                                 Your payment information is encrypted and protected.
                             </p>
                             <i className="bi bi-credit-card text-green-600" style={{ fontSize: '3rem', opacity: 0.3 }}></i>
                         </div>
-                        
+
                         <div className="col-md-4 text-center mb-4">
                             <div className="step-number bg-green-600 text-white rounded-full mx-auto mb-3" style={{ width: '4rem', height: '4rem' }}>3</div>
                             <h5 className="font-bold text-dark mb-3">Fast Delivery</h5>
                             <p className="text-muted mb-4">
-                                Sit back and relax while we prepare and deliver your fresh produce straight to your door. 
+                                Sit back and relax while we prepare and deliver your fresh produce straight to your door.
                                 Track your order in real-time through the app.
                             </p>
                             <i className="bi bi-truck text-green-600" style={{ fontSize: '3rem', opacity: 0.3 }}></i>
@@ -208,10 +214,10 @@ export default function Home() {
                     <div className="row justify-content-center mb-5">
                         <div className="col-lg-8 text-center">
                             <h2 className="text-5xl font-bold text-dark mb-4">Get in Touch</h2>
-                            <p className="text-lg text-muted">Have questions? We're here to help!</p>
+                            <p className="text-lg text-muted">Have questions? We&apos;re here to help!</p>
                         </div>
                     </div>
-                    
+
                     <div className="row g-4">
                         <div className="col-md-4">
                             <div className="bg-white border-0 shadow-sm">
@@ -228,7 +234,7 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="col-md-4">
                             <div className="bg-white border-0 shadow-sm">
                                 <div className="card-body text-center p-4">
@@ -244,7 +250,7 @@ export default function Home() {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="col-md-4">
                             <div className="bg-white border-0 shadow-sm">
                                 <div className="card-body text-center p-4">
@@ -271,10 +277,10 @@ export default function Home() {
                         <div className="col-lg-8">
                             <h2 className="text-5xl font-bold mb-4">Coming Soon to Your Phone</h2>
                             <p className="text-lg mb-5" style={{ color: 'rgba(255,255,255,0.9)' }}>
-                                FruitPack will be available on both Google Play Store and Apple App Store. 
+                                FruitPack will be available on both Google Play Store and Apple App Store.
                                 Sign up to be notified when we launch!
                             </p>
-                            
+
                             <div className="flex flex-column flex-sm-row gap-3 justify-content-center">
                                 <a href="#" className="app-store-btn bg-black text-white rounded-lg p-3 flex items-center">
                                     <div className="me-3" style={{ fontSize: '1.5rem' }}>📱</div>
@@ -283,7 +289,7 @@ export default function Home() {
                                         <div className="font-bold">Google Play</div>
                                     </div>
                                 </a>
-                                
+
                                 <a href="#" className="app-store-btn bg-black text-white rounded-lg p-3 flex items-center">
                                     <div className="me-3">
                                         <i className="bi bi-apple" style={{ fontSize: '2rem' }}></i>
@@ -305,8 +311,8 @@ export default function Home() {
                     <div className="row g-4">
                         <div className="col-md-3">
                             <div className="d-flex align-items-center mb-3">
-                                <div className="rounded-full flex items-center justify-center mr-2" 
-                                     style={{ width: '2rem', height: '2rem', background: 'linear-gradient(45deg, #22c55e, #16a34a)' }}>
+                                <div className="rounded-full flex items-center justify-center mr-2"
+                                    style={{ width: '2rem', height: '2rem', background: 'linear-gradient(45deg, #22c55e, #16a34a)' }}>
                                     <span className="text-white font-bold">F</span>
                                 </div>
                                 <span className="h5 mb-0 text-white">FruitPack</span>
@@ -315,7 +321,7 @@ export default function Home() {
                                 Fresh fruits and vegetables delivered to your door across South Africa.
                             </p>
                         </div>
-                        
+
                         <div className="col-md-3">
                             <h6 className="text-white mb-3">Company</h6>
                             <ul className="list-unstyled text-muted">
@@ -324,7 +330,7 @@ export default function Home() {
                                 <li className="mb-2"><a href="#contact">Contact</a></li>
                             </ul>
                         </div>
-                        
+
                         <div className="col-md-3">
                             <h6 className="text-white mb-3">Legal</h6>
                             <ul className="list-unstyled text-muted">
@@ -333,7 +339,7 @@ export default function Home() {
                                 <li className="mb-2"><a href="refund-policy.html">Refund Policy</a></li>
                             </ul>
                         </div>
-                        
+
                         <div className="col-md-3">
                             <h6 className="text-white mb-3">Contact</h6>
                             <ul className="list-unstyled text-muted">
@@ -343,9 +349,9 @@ export default function Home() {
                             </ul>
                         </div>
                     </div>
-                    
+
                     <hr className="my-4 border-gray-700" />
-                    
+
                     <div className="text-center text-muted">
                         <p className="mb-0">&copy; 2025 FruitPack. All rights reserved.</p>
                     </div>

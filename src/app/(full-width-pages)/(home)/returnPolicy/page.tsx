@@ -101,13 +101,13 @@ export default function RefundCancellationPolicy() {
                                         <li><strong>Missing items:</strong> Items that were ordered and paid for but not delivered</li>
                                         <li><strong>Spoiled produce:</strong> Items that are clearly spoiled or past their prime upon delivery</li>
                                         <li><strong>Wrong items:</strong> Items that differ significantly from what was ordered</li>
-                                        <li><strong>Quality issues:</strong> Produce that doesn't meet our published freshness standards</li>
+                                        <li><strong>Quality issues:</strong> Produce that doesn&apos;t meet our published freshness standards</li>
                                     </ul>
                                     
                                     <h4>NOT Eligible for Refund</h4>
                                     <ul className="text-muted">
                                         <li>Natural variations in size, shape, or color of produce</li>
-                                        <li>Minor cosmetic imperfections that don't affect quality</li>
+                                        <li>Minor cosmetic imperfections that don&apos;t affect quality</li>
                                         <li>Change of mind after delivery is completed</li>
                                         <li>Items that spoil after proper delivery due to customer storage</li>
                                         <li>Delivery delays due to customer unavailability</li>
