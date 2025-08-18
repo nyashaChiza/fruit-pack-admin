@@ -1,4 +1,4 @@
-import SignInForm from "@/components/auth/SignInForm";
+import Home from "./(full-width-pages)/(home)/index/page";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,6 +6,6 @@ export const metadata: Metadata = {
   description: "Fruit-Pack Admin SignIn Page - Next.js Dashboard",
 };
 
-export default function SignIn() {
-  return <SignInForm />;
+export default function HomePage() {
+  return <Home/>;
 }
