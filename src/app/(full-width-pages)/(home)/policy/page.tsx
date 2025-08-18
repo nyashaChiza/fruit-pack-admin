@@ -38,7 +38,7 @@ export default function PrivacyPolicy() {
             </div>
             <h3 className="font-bold text-xl mb-2">POPIA Compliant</h3>
             <p className="text-gray-600">
-              We comply with South Africa's Protection of Personal Information Act (POPIA).
+              We comply with South Africa&apos;s Protection of Personal Information Act (POPIA).
             </p>
           </div>
           <div className="bg-white shadow-lg rounded-xl p-6 hover:shadow-2xl transition">
